@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useState } from "react";
 import axios from "axios";
 
-const API_BASE = process.env.REACT_APP_API_URL + '/api/';
+const API_BASE = (process.env.REACT_APP_API_URL || "https://piggytrack.onrender.com").replace(/\/+$/, "");
 const GlobalContext = React.createContext();
 
 export const GlobalProvider = ({ children }) => {
@@ -29,7 +29,7 @@ const payload = {
 ...income,
 amount: Number(income.amount),
 };
-await api.post(/income, payload);
+await api.post( /income, payload);
 await getIncomes();
 setError(null);
 } catch (err) {
@@ -49,7 +49,7 @@ setError(err.response?.data?.message || "Server Error");
 
 const deleteIncome = async (id) => {
 try {
-await api.delete(/income/${id});
+await api.delete( /income/${id});
 await getIncomes();
 setError(null);
 } catch (err) {
@@ -66,7 +66,7 @@ const payload = {
 ...expense,
 amount: Number(expense.amount),
 };
-await api.post(/expenses, payload);
+await api.post( /expenses, payload);
 await getExpenses();
 setError(null);
 } catch (err) {
@@ -76,7 +76,7 @@ setError(err.response?.data?.message || "Server Error");
 
 const getExpenses = async () => {
 try {
-const { data } = await api.get(/expenses);
+const { data } = await api.get( /expenses);
 setExpenses(Array.isArray(data) ? data : []);
 setError(null);
 } catch (err) {
@@ -86,7 +86,7 @@ setError(err.response?.data?.message || "Server Error");
 
 const deleteExpense = async (id) => {
 try {
-await api.delete(/expenses/${id});
+await api.delete( /expenses/${id});
 await getExpenses();
 setError(null);
 } catch (err) {
