@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
 
-const API = process.env.REACT_APP_API_URL;
+const BASE_URL = process.env.REACT_APP_API_URL + '/api/';
 
 const GlobalContext = React.createContext();
 
@@ -10,85 +10,68 @@ export const GlobalProvider = ({ children }) => {
   const [expenses, setExpenses] = useState([]);
   const [error, setError] = useState(null);
 
-  // --------- Incomes ---------
+  // --- Income CRUD ---
   const addIncome = async (income) => {
     try {
-      await axios.post(`${API}/add-income`, income);
+      await axios.post(`${BASE_URL}auth/add-income`, income);
       getIncomes();
     } catch (err) {
-      console.error("addIncome error:", err);
-      setError(err?.response?.data?.message || "Failed to add income");
+      setError(err.response?.data?.message || "Server Error");
     }
   };
 
   const getIncomes = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(`${API}/income`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error("Failed to fetch incomes");
-      const data = await res.json();
-      setIncomes(data);
+      const response = await axios.get(`${BASE_URL}auth/get-incomes`);
+      setIncomes(response.data);
+      console.log(response.data);
     } catch (err) {
-      console.error("getIncomes error:", err);
-      setIncomes([]); // fallback
+      setError(err.response?.data?.message || "Server Error");
     }
   };
 
   const deleteIncome = async (id) => {
     try {
-      await axios.delete(`${API}/delete-income/${id}`);
+      await axios.delete(`${BASE_URL}auth/delete-income/${id}`);
       getIncomes();
     } catch (err) {
-      console.error("deleteIncome error:", err);
+      setError(err.response?.data?.message || "Server Error");
     }
   };
 
-  const totalIncome = () => {
-    return incomes.reduce((sum, income) => sum + income.amount, 0);
-  };
+  const totalIncome = () => incomes.reduce((acc, income) => acc + income.amount, 0);
 
-  // --------- Expenses ---------
+  // --- Expense CRUD ---
   const addExpense = async (expense) => {
     try {
-      await axios.post(`${API}/add-expense`, expense);
+      await axios.post(`${BASE_URL}auth/add-expense`, expense);
       getExpenses();
     } catch (err) {
-      console.error("addExpense error:", err);
-      setError(err?.response?.data?.message || "Failed to add expense");
+      setError(err.response?.data?.message || "Server Error");
     }
   };
 
   const getExpenses = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(`${API}/expenses`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error("Failed to fetch expenses");
-      const data = await res.json();
-      setExpenses(data);
+      const response = await axios.get(`${BASE_URL}auth/get-expenses`);
+      setExpenses(response.data);
+      console.log(response.data);
     } catch (err) {
-      console.error("getExpenses error:", err);
-      setExpenses([]); // fallback
+      setError(err.response?.data?.message || "Server Error");
     }
   };
 
   const deleteExpense = async (id) => {
     try {
-      await axios.delete(`${API}/delete-expense/${id}`);
+      await axios.delete(`${BASE_URL}auth/delete-expense/${id}`);
       getExpenses();
     } catch (err) {
-      console.error("deleteExpense error:", err);
+      setError(err.response?.data?.message || "Server Error");
     }
   };
 
-  const totalExpenses = () => {
-    return expenses.reduce((sum, expense) => sum + expense.amount, 0);
-  };
+  const totalExpenses = () => expenses.reduce((acc, expense) => acc + expense.amount, 0);
 
-  // --------- Balance & History ---------
   const totalBalance = () => totalIncome() - totalExpenses();
 
   const transactionHistory = () => {
@@ -121,6 +104,4 @@ export const GlobalProvider = ({ children }) => {
   );
 };
 
-export const useGlobalContext = () => {
-  return useContext(GlobalContext);
-};
+export const useGlobalContext = () => useContext(GlobalContext);
