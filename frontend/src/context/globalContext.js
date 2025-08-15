@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useState } from "react";
 import axios from "axios";
 
-const API_BASE = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/+$/,''); // no trailing slash
+const API_BASE = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/+$/, ""); // no trailing slash
 const GlobalContext = React.createContext();
 
 export const GlobalProvider = ({ children }) => {
@@ -9,7 +9,7 @@ const [incomes, setIncomes] = useState([]);
 const [expenses, setExpenses] = useState([]);
 const [error, setError] = useState(null);
 
-const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
 const api = useMemo(() => {
 const instance = axios.create({
@@ -119,7 +119,7 @@ totalExpenses,
 totalBalance,
 transactionHistory,
 error,
-setError
+setError,
 }}
 >
 {children}
