@@ -9,8 +9,8 @@ function Income() {
     const { incomes, getIncomes, deleteIncome, totalIncome } = useGlobalContext();
 
     useEffect(() => {
-        getIncomes();
-    }, [getIncomes]);
+getIncomes();
+}, []);
 
     return (
         <IncomeStyled>
@@ -25,19 +25,19 @@ function Income() {
                     </div>
                     <div className="incomes">
                         {incomes.map(({ _id, title, amount, date, category, description, type }) => (
-                            <IncomeItem
-                                key={_id}
-                                id={_id}
-                                title={title}
-                                description={description}
-                                amount={amount}
-                                date={date}
-                                type={type}
-                                category={category}
-                                indicatorColor="var(--color-green)"
-                                deleteItem={deleteIncome}
-                            />
-                        ))}
+                         <IncomeItem
+                           key={_id}
+                            id={_id}
+                            title={title}
+                     description={description}
+                amount={amount}
+                   date={date}
+                type={type || 'income'}
+              category={category}
+             indicatorColor="var(--color-green)"
+          deleteItem={deleteIncome}
+           />
+           ))}
                     </div>
                 </div>
             </InnerLayout>
