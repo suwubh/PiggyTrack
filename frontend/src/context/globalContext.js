@@ -1,95 +1,126 @@
 import React, { useContext, useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 
 const API = process.env.REACT_APP_API_URL;
 
 const GlobalContext = React.createContext();
 
 export const GlobalProvider = ({ children }) => {
-    const [incomes, setIncomes] = useState([]);
-    const [expenses, setExpenses] = useState([]);
-    const [error, setError] = useState(null);
+  const [incomes, setIncomes] = useState([]);
+  const [expenses, setExpenses] = useState([]);
+  const [error, setError] = useState(null);
 
-    // Calculate incomes
-    const addIncome = async (income) => {
-        try {
-            await axios.post(`${API}/add-income`, income);
-            getIncomes();
-        } catch (err) {
-            setError(err.response?.data?.message || "Something went wrong");
-        }
-    };
+  // --------- Incomes ---------
+  const addIncome = async (income) => {
+    try {
+      await axios.post(`${API}/add-income`, income);
+      getIncomes();
+    } catch (err) {
+      console.error("addIncome error:", err);
+      setError(err?.response?.data?.message || "Failed to add income");
+    }
+  };
 
-    const getIncomes = async () => {
-        const token = localStorage.getItem('token');
-        const res = await fetch(`${API}/income`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
-        const data = await res.json();
-        setIncomes(data);
-    };
+  const getIncomes = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API}/income`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("Failed to fetch incomes");
+      const data = await res.json();
+      setIncomes(data);
+    } catch (err) {
+      console.error("getIncomes error:", err);
+      setIncomes([]); // fallback
+    }
+  };
 
-    const deleteIncome = async (id) => {
-        await axios.delete(`${API}/delete-income/${id}`);
-        getIncomes();
-    };
+  const deleteIncome = async (id) => {
+    try {
+      await axios.delete(`${API}/delete-income/${id}`);
+      getIncomes();
+    } catch (err) {
+      console.error("deleteIncome error:", err);
+    }
+  };
 
-    const totalIncome = () => incomes.reduce((acc, curr) => acc + curr.amount, 0);
+  const totalIncome = () => {
+    return incomes.reduce((sum, income) => sum + income.amount, 0);
+  };
 
-    // Calculate expenses
-    const addExpense = async (expense) => {
-        try {
-            await axios.post(`${API}/add-expense`, expense);
-            getExpenses();
-        } catch (err) {
-            setError(err.response?.data?.message || "Something went wrong");
-        }
-    };
+  // --------- Expenses ---------
+  const addExpense = async (expense) => {
+    try {
+      await axios.post(`${API}/add-expense`, expense);
+      getExpenses();
+    } catch (err) {
+      console.error("addExpense error:", err);
+      setError(err?.response?.data?.message || "Failed to add expense");
+    }
+  };
 
-    const getExpenses = async () => {
-        const token = localStorage.getItem('token');
-        const res = await fetch(`${API}/expenses`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
-        const data = await res.json();
-        setExpenses(data);
-    };
+  const getExpenses = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API}/expenses`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("Failed to fetch expenses");
+      const data = await res.json();
+      setExpenses(data);
+    } catch (err) {
+      console.error("getExpenses error:", err);
+      setExpenses([]); // fallback
+    }
+  };
 
-    const deleteExpense = async (id) => {
-        await axios.delete(`${API}/delete-expense/${id}`);
-        getExpenses();
-    };
+  const deleteExpense = async (id) => {
+    try {
+      await axios.delete(`${API}/delete-expense/${id}`);
+      getExpenses();
+    } catch (err) {
+      console.error("deleteExpense error:", err);
+    }
+  };
 
-    const totalExpenses = () => expenses.reduce((acc, curr) => acc + curr.amount, 0);
+  const totalExpenses = () => {
+    return expenses.reduce((sum, expense) => sum + expense.amount, 0);
+  };
 
-    const totalBalance = () => totalIncome() - totalExpenses();
+  // --------- Balance & History ---------
+  const totalBalance = () => totalIncome() - totalExpenses();
 
-    const transactionHistory = () => {
-        const history = [...incomes, ...expenses];
-        history.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        return history.slice(0, 3);
-    };
+  const transactionHistory = () => {
+    const history = [...incomes, ...expenses];
+    history.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    return history.slice(0, 3);
+  };
 
-    return (
-        <GlobalContext.Provider value={{
-            addIncome,
-            getIncomes,
-            incomes,
-            deleteIncome,
-            expenses,
-            totalIncome,
-            addExpense,
-            getExpenses,
-            deleteExpense,
-            totalExpenses,
-            totalBalance,
-            transactionHistory,
-            error,
-            setError
-        }}>
-            {children}
-        </GlobalContext.Provider>
-    );
+  return (
+    <GlobalContext.Provider
+      value={{
+        addIncome,
+        getIncomes,
+        incomes,
+        deleteIncome,
+        expenses,
+        totalIncome,
+        addExpense,
+        getExpenses,
+        deleteExpense,
+        totalExpenses,
+        totalBalance,
+        transactionHistory,
+        error,
+        setError,
+      }}
+    >
+      {children}
+    </GlobalContext.Provider>
+  );
 };
 
-export const useGlobalContext = () => useContext(GlobalContext);
+export const useGlobalContext = () => {
+  return useContext(GlobalContext);
+};
