@@ -25,17 +25,26 @@ function Form() {
         setError(null);
     };
 
-    const handleSubmit = e => {
-        e.preventDefault();
-        addIncome(inputState);
-        setInputState({
-            title: '',
-            amount: '',
-            date: null,
-            category: '',
-            description: '',
-        });
-    };
+    const handleSubmit = async e => {
+e.preventDefault();
+const amt = Number(amount);
+if (!title || !category || !description || !date) {
+setError('All fields are required!');
+return;
+}
+if (isNaN(amt) || amt <= 0) {
+setError('Amount must be a positive number!');
+return;
+}
+await addIncome({ title, amount: amt, category, description, date });
+setInputState({
+title: '',
+amount: '',
+date: null,
+category: '',
+description: '',
+});
+};
 
     return (
         <FormStyled onSubmit={handleSubmit}>
