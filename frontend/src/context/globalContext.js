@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useState } from "react";
 import axios from "axios";
 
-const API_BASE = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/+$/, ""); // no trailing slash
+const API_BASE = (process.env.REACT_APP_API_URL || "https://piggytrack.onrender.com").replace(/\/+$/, "");
 const GlobalContext = React.createContext();
 
 export const GlobalProvider = ({ children }) => {
