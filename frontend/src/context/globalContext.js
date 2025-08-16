@@ -1,10 +1,8 @@
-// File: frontend/src/context/globalContext.js (Cleaned and adjusted)
-
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useMemo, useState, useEffect } from "react";
 import axios from "axios";
 
 // Ensure REACT_APP_API_URL points to your *backend* service URL in Render environment variables
-const API_BASE = (process.env.REACT_APP_API_URL || "https://piggytrack.onrender.com").replace(/\/+$/, "");
+const API_BASE = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/+$/, "");
 
 const GlobalContext = React.createContext();
 
@@ -12,6 +10,7 @@ export const GlobalProvider = ({ children }) => {
   const [incomes, setIncomes] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null); // State to store user data
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
@@ -25,6 +24,33 @@ export const GlobalProvider = ({ children }) => {
     });
     return instance;
   }, [token]);
+
+  // Function to fetch user data
+  const getUserData = async () => {
+    try {
+      const { data } = await api.get(`/dashboard`); // Assuming /api/v1/dashboard returns user info
+      setUser(data.user);
+    } catch (err) {
+      console.error("Error fetching user data:", err);
+      setUser(null);
+      // Optionally clear token if user data fetching fails (e.g., token expired)
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        localStorage.removeItem('token');
+        window.location.reload();
+      }
+    }
+  };
+
+  // Fetch user data on component mount or token change
+  useEffect(() => {
+    if (token) {
+      getUserData();
+    } else {
+      setUser(null); // Clear user if no token
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]); // Dependency on token ensures re-fetch if token changes
+
 
   // Income
   const addIncome = async (income) => {
@@ -118,6 +144,8 @@ export const GlobalProvider = ({ children }) => {
         transactionHistory,
         error,
         setError,
+        user, // Expose user data
+        getUserData, // Expose function to re-fetch user data if needed
       }}
     >
       {children}
