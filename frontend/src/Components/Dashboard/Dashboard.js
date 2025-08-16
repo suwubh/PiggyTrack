@@ -107,12 +107,10 @@ const DashboardStyled = styled.div`
                     border-radius: 20px;
                     padding: 1rem;
                     p {
-                        /* Original p styles that might cause vertical stacking */
                         font-size: 3.5rem;
                         font-weight: 700;
                     }
 
-                    /* FIX: Apply flexbox to the specific paragraph containing rupee and amount */
                     .amount-display {
                         display: flex; /* Make it a flex container */
                         align-items: center; /* Align items vertically in the middle */
@@ -130,8 +128,9 @@ const DashboardStyled = styled.div`
                     .amount-display { /* Apply specific color for balance */
                         color: var(--color-green);
                         align-items: center;
+                        max-width: 100%; 
                         opacity: 0.8; /* Adjusted for better visibility */
-                        font-size: 4rem; /* Slightly larger for balance */
+                        font-size: 3.5rem; /* Slightly larger for balance */
                     }
                 }
             }
