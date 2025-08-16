@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { dateFormat } from '../../utils/dateFormat';
-import { bitcoin, book, calender, card, circle, clothing, comment, dollar, food, freelance, medical, money, piggy, stocks, takeaway, trash, tv, users, yt } from '../../utils/Icons';
+import { bitcoin, book, calender, card, circle, clothing, comment, rupee, food, freelance, medical, money, piggy, stocks, takeaway, trash, tv, users, yt } from '../../utils/Icons';
 import Button from '../Button/Button';
 
 function IncomeItem({ id, title, amount, date, category, description, deleteItem, indicatorColor, type }) {
@@ -46,7 +46,7 @@ function IncomeItem({ id, title, amount, date, category, description, deleteItem
                 <h5>{title}</h5>
                 <div className="inner-content">
                     <div className="text">
-                        <p>{dollar} {amount}</p>
+                        <p>{rupee} {amount}</p>
                         <p>{calender} {dateFormat(date)}</p>
                         <p>{comment} {description}</p>
                     </div>
