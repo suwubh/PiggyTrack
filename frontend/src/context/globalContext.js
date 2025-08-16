@@ -2,7 +2,7 @@ import React, { useContext, useMemo, useState, useEffect } from "react";
 import axios from "axios";
 
 // Ensure REACT_APP_API_URL points to your *backend* service URL in Render environment variables
-const API_BASE = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/+$/, "");
+const API_BASE = (process.env.REACT_APP_API_URL || "https://piggytrack.onrender.com").replace(/\/+$/, "");
 
 const GlobalContext = React.createContext();
 
