@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useGlobalContext } from '../../context/globalContext';
-import History from '../History'; // Corrected import path
+import History from '../../History/History'; // Corrected import path
 import { InnerLayout } from '../../styles/Layouts';
 import { rupee } from '../../utils/Icons';
 import Chart from '../Chart/Chart';
