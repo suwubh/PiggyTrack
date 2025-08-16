@@ -29,7 +29,7 @@ function Transactions() {
   return (
     <TransactionsStyled>
       <InnerLayout>
-        <h1>All Transactions</h1>
+        <h1>Transactions history</h1>
         <div className="transactions-list">
           {allTransactions.length === 0 ? (
             <p className="no-transactions">No transactions to display yet.</p>
