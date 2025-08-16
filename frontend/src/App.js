@@ -1,4 +1,4 @@
-// File: frontend/src/App.js
+// File: src/App.js
 
 import React, { useState, useMemo } from "react";
 import styled from "styled-components";
@@ -11,7 +11,8 @@ import Income from "./Components/Income/Income";
 import Expenses from "./Components/Expenses/Expenses";
 import AuthPage from "./Components/Auth/Authpage";
 import Transactions from "./Components/Transactions/Transactions";
-import { GlobalStyle } from "./styles/GlobalStyle"; // <-- ADD THIS IMPORT
+import { GlobalStyle } from "./styles/GlobalStyle";
+import ResponsiveNavigation from "./Components/ResponsiveNavigation/ResponsiveNavigation"; // <--- ADD THIS IMPORT
 
 function App() {
     const [active, setActive] = useState(1);
@@ -42,10 +43,13 @@ function App() {
     // DASHBOARD VIEW
     return (
         <AppStyled bg={bg}>
-            <GlobalStyle /> {/* <-- ADD THIS LINE */}
+            <GlobalStyle />
             {orbMemo}
             <MainLayout>
-                <Navigation active={active} setActive={setActive} handleSignOut={handleSignOut} />
+                {/* <Navigation ... /> will now be wrapped */}
+                <ResponsiveNavigation> {/* <--- WRAP NAVIGATION */}
+                    <Navigation active={active} setActive={setActive} handleSignOut={handleSignOut} />
+                </ResponsiveNavigation>
                 <main>
                     <HeaderTitle>PiggyTrack</HeaderTitle>
                     {displayData()}
@@ -68,6 +72,11 @@ const AppStyled = styled.div`
         border-radius: 32px;
         overflow-x: hidden;
         padding: 20px;
+
+        /* Adjust main content for desktop to shift for static sidebar */
+        @media(min-width: 769px) {
+            margin-left: 250px; /* Space for the permanent sidebar */
+        }
     }
 `;
 const HeaderTitle = styled.h1`
