@@ -132,8 +132,9 @@ const DashboardStyled = styled.div`
                     align-items: center;
                     .amount-display { /* Apply specific color for balance */
                         color: var(--color-green);
+                        align-items: center;
                         opacity: 0.8; /* Adjusted for better visibility */
-                        font-size: 4.5rem; /* Slightly larger for balance */
+                        font-size: 4rem; /* Slightly larger for balance */
                     }
                 }
             }
