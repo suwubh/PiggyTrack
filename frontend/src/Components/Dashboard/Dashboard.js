@@ -98,9 +98,11 @@ const DashboardStyled = styled.div`
                     padding: 1rem;
                     p {
                         font-weight: 700;
-                        font-size: clamp(1.2rem, 2.5vw, 4rem);
+                        font-size: clamp(0.8rem, 2.5vw, 4rem);
                         white-space: nowrap;
+                        min-width: 0;
                         max-width: 100%;
+                        overflow: hidden;
                     }
                 }
                 .balance {
@@ -112,7 +114,10 @@ const DashboardStyled = styled.div`
                     .amount-display {
                         color: var(--color-green);
                         opacity: 0.8;
-                        font-size: clamp(1.8rem, 3vw, 4rem);
+                        font-size: clamp(0.8rem, 3vw, 4rem);
+                        min-width: 0;
+                        max-width: 100%;
+                        overflow: hidden;
                     }
                 }
             }
@@ -142,9 +147,11 @@ const DashboardStyled = styled.div`
                 align-items: center;
                 p {
                     font-weight: 600;
-                    font-size: clamp(1rem, 1.5vw, 1.6rem);
+                    font-size: clamp(0.8rem, 1.5vw, 1.6rem);
                     white-space: nowrap;
+                    min-width: 0;
                     max-width: 100%;
+                    overflow: hidden;
                 }
             }
         }
