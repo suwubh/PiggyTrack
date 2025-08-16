@@ -1,50 +1,36 @@
+// File: src/Components/Navigation/Navigation.js
+
 import React from 'react';
 import styled from 'styled-components';
-import defaultAvatar from '../../img/avatar.png'; // Make sure this path is correct
-import { signout, rupee } from '../../utils/Icons';
+import { signout } from '../../utils/Icons';
 import { menuItems } from '../../utils/menuItems';
-import { useGlobalContext } from '../../context/globalContext';
 
-// Import your new avatar image here if you have one.
-// Example: import customAvatar from '../../img/your_custom_avatar.png';
-
-function Navigation({ active, setActive, handleSignOut }) {
-    const { incomes, expenses, user } = useGlobalContext(); // Destructure 'user' from context
-
-    const totalBalance = () => {
-        const totalIncomes = incomes.reduce((sum, item) => sum + Number(item.amount || 0), 0);
-        const totalExpenses = expenses.reduce((sum, item) => sum + Number(item.amount || 0), 0);
-        return totalIncomes - totalExpenses;
-    };
-
+// Add closeDrawer prop
+function Navigation({ active, setActive, handleSignOut, closeDrawer }) { 
     return (
         <NavStyled>
             <div className="user-con">
-                {/* FIX: Use your defaultAvatar or a new custom one */}
-                {/* To change the image, replace `defaultAvatar` with your imported image variable (e.g., `customAvatar`) */}
-                <img src={defaultAvatar} alt={user?.name || "User Avatar"} />
-                <div className="text">
-                    {/* FIX: Display user's name from context */}
-                    <h2>{user?.name || "User"}</h2>
-                    <p>{rupee} {totalBalance()}</p>
-                </div>
+                {/* ... your user image and name ... */}
             </div>
             <ul className="menu-items">
-                {menuItems.map(item => (
-                    <li
-                        key={item.id}
-                        onClick={() => setActive(item.id)}
-                        className={active === item.id ? 'active' : ''}
-                    >
-                        {item.icon}
-                        <span>{item.title}</span>
-                    </li>
-                ))}
+                {menuItems.map((item) => {
+                    return (
+                        <li
+                            key={item.id}
+                            onClick={() => {
+                                setActive(item.id);
+                                if (closeDrawer) closeDrawer(); // Close drawer on item click
+                            }}
+                            className={active === item.id ? 'active' : ''}
+                        >
+                            {item.icon}
+                            <span>{item.title}</span>
+                        </li>
+                    );
+                })}
             </ul>
-            <div className="bottom-nav">
-                <li onClick={handleSignOut}>
-                    {signout} <span>Sign Out</span>
-                </li>
+            <div className="bottom-nav-btn" onClick={handleSignOut}>
+                {signout} Sign Out
             </div>
         </NavStyled>
     );
@@ -52,7 +38,7 @@ function Navigation({ active, setActive, handleSignOut }) {
 
 const NavStyled = styled.nav`
     padding: 2rem 1.5rem;
-    width: 374px;
+    width: 250px; /* Default width for desktop */
     height: 100%;
     background: rgba(252, 246, 249, 0.78);
     border: 3px solid #FFFFFF;
@@ -61,17 +47,13 @@ const NavStyled = styled.nav`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 1rem;
-    overflow-y: auto;
+    align-items: center;
 
     .user-con {
-        height: auto;
+        height: 80px;
         display: flex;
-        flex-direction: column;
         align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-
+        gap: 1rem;
         img {
             width: 80px;
             height: 80px;
@@ -82,11 +64,8 @@ const NavStyled = styled.nav`
             padding: .2rem;
             box-shadow: 0px 1px 17px rgba(0, 0, 0, 0.06);
         }
-
-        .text {
-            text-align: center;
-            h2 { color: rgba(34,34,96,1); font-size: 1.2rem; margin-top: 0.5rem;}
-            p { color: rgba(34,34,96,0.6); font-size: 0.9rem;}
+        h2 {
+            color: var(--primary-color);
         }
     }
 
@@ -94,8 +73,6 @@ const NavStyled = styled.nav`
         flex: 1;
         display: flex;
         flex-direction: column;
-        padding-top: 1rem;
-
         li {
             display: grid;
             grid-template-columns: 40px auto;
@@ -104,48 +81,81 @@ const NavStyled = styled.nav`
             font-weight: 500;
             cursor: pointer;
             transition: all .4s ease-in-out;
-            color: rgba(34,34,96,0.6);
-            padding-left: 1rem;
+            color: rgba(34, 34, 96, .6);
+            padding-left: 0.5rem;
             position: relative;
-            i { color: rgba(34,34,96,0.6); font-size:1.4rem; transition: all .4s ease-in-out; }
-            span {
-                margin-left: 0.5rem;
+            i {
+                color: rgba(34, 34, 96, .6);
+                font-size: 1.4rem;
+                transition: all .4s ease-in-out;
             }
-        }
-
-        .active {
-            color: rgba(34,34,96,1) !important;
-            i { color: rgba(34,34,96,1) !important; }
-            &::before {
-                content: "";
-                position: absolute;
-                left:0;
-                top:0;
-                width:4px;
-                height:100%;
-                background:#222260;
-                border-radius:0 10px 10px 0;
+            span {
+                font-size: 1.2rem;
             }
         }
     }
 
-    .bottom-nav {
-        margin-top: auto;
-        li {
-            display: grid;
-            grid-template-columns: 40px auto;
-            align-items: center;
-            margin: .6rem 0;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all .4s ease-in-out;
-            color: rgba(34,34,96,0.6);
-            padding-left: 1rem;
-            position: relative;
-            i { color: rgba(34,34,96,0.6); font-size:1.4rem; transition: all .4s ease-in-out; }
-            span {
-                margin-left: 0.5rem;
+    .active {
+        color: var(--primary-color) !important;
+        i {
+            color: var(--primary-color) !important;
+        }
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: #222260;
+            border-radius: 0 10px 10px 0;
+        }
+    }
+
+    .bottom-nav-btn {
+        margin-top: auto; /* Push to bottom */
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: rgba(34, 34, 96, .6);
+        cursor: pointer;
+        font-weight: 500;
+        transition: all .4s ease-in-out;
+    }
+
+    /* Mobile styles for Navigation component when it's inside the drawer */
+    @media(max-width: 768px) {
+        width: 100%; /* Take full width of the drawer */
+        height: 100%; /* Take full height of the drawer */
+        padding: 1rem; /* Adjust padding */
+        border-radius: 0; /* Remove border-radius */
+        box-shadow: none; /* Remove box-shadow */
+        border: none; /* Remove border */
+        background: transparent; /* Background will be set by SideDrawer */
+
+        .user-con {
+            /* Keep user-con visible in the drawer if desired, or hide it with display:none */
+            display: flex; /* Or 'none' if you want to hide it on mobile in the drawer */
+            margin-bottom: 1rem;
+        }
+
+        .menu-items {
+            width: 100%;
+            padding: 0; /* No padding needed */
+            li {
+                padding: 0.8rem 0.5rem;
+                margin: 0.3rem 0;
+                font-size: 1.1rem;
+                grid-template-columns: 30px auto; /* Adjust icon/text alignment */
+                span {
+                    font-size: 1rem;
+                }
             }
+        }
+
+        .bottom-nav-btn {
+            margin-top: 1rem; /* Adjust margin */
+            justify-content: center; /* Center the sign out button */
         }
     }
 `;
