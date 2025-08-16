@@ -1,8 +1,9 @@
 // File: frontend/src/Components/Dashboard/Dashboard.js
-import React, { useEffect, useRef } from 'react';
+
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useGlobalContext } from '../../context/globalContext';
-import History from '../../History/History'; // Corrected import path
+import History from '../../History/History';
 import { InnerLayout } from '../../styles/Layouts';
 import { rupee } from '../../utils/Icons';
 import Chart from '../Chart/Chart';
@@ -10,99 +11,10 @@ import Chart from '../Chart/Chart';
 function Dashboard() {
     const { incomes, expenses, getIncomes, getExpenses } = useGlobalContext();
 
-    // Create refs for each amount display element
-    const balanceRef = useRef(null);
-    const totalIncomeRef = useRef(null);
-    const totalExpenseRef = useRef(null);
-    const minIncomeRef = useRef(null);
-    const maxIncomeRef = useRef(null);
-    const minExpenseRef = useRef(null);
-    const maxExpenseRef = useRef(null);
-
     useEffect(() => {
         getIncomes();
         getExpenses();
-    }, []); // eslint-disable-next-line react-hooks/exhaustive-deps
-
-    // Effect to adjust font sizes dynamically
-    useEffect(() => {
-        // Helper function to adjust font size to fit container width
-        const adjustFontSize = (element, initialRemSize, minRemSize = 1) => {
-            if (!element) return;
-
-            const defaultPxSize = initialRemSize * 16; // Convert rem to px (assuming 1rem = 16px)
-
-            // Reset font size to initial large value to measure true required width
-            // This is crucial for accurate measurement and dynamic shrinking
-            element.style.fontSize = `${defaultPxSize}px`;
-
-            const parent = element.parentElement;
-            if (!parent) return; // Ensure parent exists
-
-            const elementComputedStyle = window.getComputedStyle(element); // Get computed style for the element itself
-            
-            // Calculate parent's usable width, accounting for its own padding
-            const parentComputedStyle = window.getComputedStyle(parent);
-            const parentPaddingLeft = parseFloat(parentComputedStyle.paddingLeft);
-            const parentPaddingRight = parseFloat(parentComputedStyle.paddingRight);
-            const parentUsableWidth = parent.offsetWidth - parentPaddingLeft - parentPaddingRight;
-
-            // Create a temporary span to measure text width accurately
-            const textSpan = document.createElement('span'); 
-            textSpan.style.fontFamily = elementComputedStyle.fontFamily; // Use element's font-family
-            textSpan.style.fontWeight = elementComputedStyle.fontWeight; // Use element's font-weight
-            textSpan.style.fontSize = `${defaultPxSize}px`; // Use the default size for measurement
-            textSpan.style.whiteSpace = 'nowrap'; 
-            textSpan.style.position = 'absolute'; 
-            textSpan.style.visibility = 'hidden';
-            textSpan.textContent = element.textContent; // Get the full text content
-            document.body.appendChild(textSpan);
-            const currentTextWidth = textSpan.offsetWidth;
-            document.body.removeChild(textSpan);
-
-            // Get the gap value from the element's computed style (it's a flex container)
-            const gapBetweenRupeeAndAmount = parseFloat(elementComputedStyle.gap || '0px'); 
-
-            // Total width needed = text content width + gap
-            const totalContentWidthNeeded = currentTextWidth + gapBetweenRupeeAndAmount;
-
-            console.log(`Element: ${element.textContent.trim()}, Parent Usable Width: ${parentUsableWidth}px, Content Needed: ${totalContentWidthNeeded}px, Gap: ${gapBetweenRupeeAndAmount}px`);
-
-            if (totalContentWidthNeeded > parentUsableWidth && parentUsableWidth > 0) {
-                let newFontSizePx = (parentUsableWidth / totalContentWidthNeeded) * defaultPxSize;
-                
-                // Ensure new font size doesn't go below a minimum readable size
-                const minPxSize = minRemSize * 16;
-                if (newFontSizePx < minPxSize) {
-                    newFontSizePx = minPxSize;
-                }
-                element.style.fontSize = `${newFontSizePx}px`;
-                console.log(`Adjusted to: ${newFontSizePx}px`);
-            } else {
-                element.style.fontSize = `${initialRemSize}rem`; // Reset if it fits
-            }
-        };
-
-        const runAllAdjustments = () => {
-            // Give a slight delay to ensure DOM is fully rendered after data updates
-            setTimeout(() => {
-                adjustFontSize(balanceRef.current, 4, 1.8);
-                adjustFontSize(totalIncomeRef.current, 3.5, 1.5);
-                adjustFontSize(totalExpenseRef.current, 3.5, 1.5);
-                adjustFontSize(minIncomeRef.current, 1.6, 1);
-                adjustFontSize(maxIncomeRef.current, 1.6, 1);
-                adjustFontSize(minExpenseRef.current, 1.6, 1);
-                adjustFontSize(maxExpenseRef.current, 1.6, 1);
-            }, 100); // 100ms delay
-        };
-
-        // Run adjustments on mount and when data changes
-        runAllAdjustments();
-        
-        // Add event listener for window resize to re-adjust
-        window.addEventListener('resize', runAllAdjustments);
-        return () => window.removeEventListener('resize', runAllAdjustments);
-    }, [incomes, expenses]); // Re-run this effect when data changes
+    }, []);
 
     const totalIncome = incomes.reduce((total, income) => total + income.amount, 0);
     const totalExpenses = expenses.reduce((total, expense) => total + expense.amount, 0);
@@ -114,7 +26,7 @@ function Dashboard() {
 
     const expenseAmounts = expenses.map(item => item.amount);
     const minExpense = expenseAmounts.length ? Math.min(...expenseAmounts) : 0;
-    const maxExpense = expenseAmounts.length ? Math.max(...expenseAmounts) : 0; // Fixed typo: Math.Max -> Math.max
+    const maxExpense = expenseAmounts.length ? Math.max(...expenseAmounts) : 0;
 
     return (
         <DashboardStyled>
@@ -126,19 +38,20 @@ function Dashboard() {
                         <div className="amount-con">
                             <div className="income">
                                 <h2>Total Income</h2>
-                                <p className="amount-display" ref={totalIncomeRef}>
+                                <p className="amount-display">
                                     {rupee} {totalIncome}
                                 </p>
                             </div>
                             <div className="expense">
                                 <h2>Total Expense</h2>
-                                <p className="amount-display" ref={totalExpenseRef}>
+                                <p className="amount-display">
                                     {rupee} {totalExpenses}
                                 </p>
                             </div>
                             <div className="balance">
                                 <h2>Total Balance</h2>
-                                <p className="amount-display" ref={balanceRef}>
+                                {/* Removed ref */}
+                                <p className="amount-display">
                                     {rupee} {totalBalance}
                                 </p>
                             </div>
@@ -148,19 +61,19 @@ function Dashboard() {
                         <History />
                         <h2 className="salary-title">Min <span>Salary</span> Max</h2>
                         <div className="salary-item">
-                            <p ref={minIncomeRef}>
+                            <p>
                                 {rupee} {minIncome}
                             </p>
-                            <p ref={maxIncomeRef}>
+                            <p>
                                 {rupee} {maxIncome}
                             </p>
                         </div>
                         <h2 className="salary-title">Min <span>Expense</span> Max</h2>
                         <div className="salary-item">
-                            <p ref={minExpenseRef}>
+                            <p>
                                 {rupee} {minExpense}
                             </p>
-                            <p ref={maxExpenseRef}>
+                            <p>
                                 {rupee} {maxExpense}
                             </p>
                         </div>
@@ -186,13 +99,16 @@ const DashboardStyled = styled.div`
                 margin-top: 2rem;
                 .income, .expense, .balance {
                     grid-column: span 2;
+                }
+                .income, .expense, .balance {
                     background: #FCF6F9;
                     border: 2px solid #FFFFFF;
                     box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
                     border-radius: 20px;
-                    padding: 1rem; /* Consider reducing this if still overflowing: e.g., padding: 0.5rem; */
+                    padding: 1rem; /* Consider reducing this if needed: e.g., padding: 0.5rem; */
 
-                    p { /* General paragraph style, this will be overridden by .amount-display */
+                    p {
+                        font-size: 3.5rem; /* Reverting to fixed font size */
                         font-weight: 700;
                     }
                     
@@ -206,14 +122,9 @@ const DashboardStyled = styled.div`
                         max-width: 100%;     /* Ensures content respects parent's width */
                         flex-shrink: 1; /* Allow content to shrink */
 
-                        /* === THE KEY FIXES FOR FONT SIZE === */
-                        /* Use a more robust font-sizing method */
-                        /* For balance, total income, total expense */
-                        font-size: clamp(2rem, 5vw, 4rem); /* Will adjust from 2rem up to 4rem, proportionally to viewport width */
-
-                        /* Target the rupee icon specifically within amount-display if it's too big */
+                        /* Targeting rupee icon specifically within amount-display */
                         svg, i { /* Assuming rupee is an SVG or an <i> tag for font icons */
-                            font-size: clamp(1.5rem, 4vw, 3rem); /* Smaller than number, scales with it */
+                            font-size: 2.5rem; /* Fixed size, adjust as needed */
                         }
                     }
                 }
@@ -226,11 +137,10 @@ const DashboardStyled = styled.div`
                     .amount-display {
                         color: var(--color-green);
                         opacity: 0.8;
-                        /* Re-apply clamp here to potentially set a slightly different range for balance */
-                        font-size: clamp(2.5rem, 6vw, 4.5rem); /* Balance can be a bit larger initially */
+                        font-size: 4rem; /* Reverting balance to a fixed, larger font size */
 
                         svg, i {
-                            font-size: clamp(2rem, 5vw, 3.5rem);
+                            font-size: 3rem; /* Fixed size for balance rupee, adjust as needed */
                         }
                     }
                 }
@@ -267,11 +177,10 @@ const DashboardStyled = styled.div`
                     max-width: 100%;
                     flex-shrink: 1;
 
-                    /* Apply clamp for min/max salary/expense too */
-                    font-size: clamp(1rem, 3vw, 1.6rem); /* Adjust as needed */
+                    font-size: 1.6rem; /* Reverting min/max salary/expense to fixed font size */
 
                     svg, i {
-                        font-size: clamp(0.8rem, 2.5vw, 1.4rem);
+                        font-size: 1.4rem; /* Fixed size for min/max rupee, adjust as needed */
                     }
                 }
             }
