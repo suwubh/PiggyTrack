@@ -1,59 +1,17 @@
-// File: src/Components/Expenses/Expenses.js
+// File: frontend/src/Components/Expenses/Expenses.js
 
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useGlobalContext } from '../../context/globalContext';
 import { InnerLayout } from '../../styles/Layouts';
-import IncomeItem from '../IncomeItem/IncomeItem'; // Reusing IncomeItem for display
-import ExpenseForm from '../Form/ExpenseForm';
-import ExportToExcelButton from '../ExportToExcelButton/ExportToExcelButton'; // Import the new component
-
-function Expenses() {
-    const { expenses, getExpenses, deleteExpense, totalExpenses } = useGlobalContext();
-
-    useEffect(() => {
-        getExpenses();
-    }, []);
-
-    return (
-        <ExpenseStyled>
-            <InnerLayout>
-                <h1>Expenses</h1>
-                <h2 className="total-expense">Total Expense: <span>₹{totalExpenses()}</span></h2>
-                <div className="expense-content">
-                    <div className="form-container">
-                        <ExpenseForm /> {/* Your form to add expense */}
-                        <div style={{ marginTop: '1rem' }}>
-                            <ExportToExcelButton data={expenses} fileName="PiggyTrack_Expenses" buttonText="Download Expenses" />
-                        </div>
-                    </div>
-                    <div className="expenses">
-                        {expenses.map((expense) => {
-                            const { _id, title, amount, date, category, description, type } = expense;
-                            return <IncomeItem // Reusing IncomeItem for consistent display
-                                key={_id}
-                                id={_id}
-                                title={title}
-                                description={description}
-                                amount={amount}
-                                date={date}
-                                type={type}
-                                category={category}
-                                indicatorColor="var(--color-delete)" // Use delete color for expenses
-                                deleteItem={deleteExpense}
-                            />
-                        })}
-                    </div>
-                </div>
-            </InnerLayout>
-        </ExpenseStyled>
-    )
-}
+import IncomeItem from '../Income/IncomeItem';
+import ExpenseForm from './ExpenseForm';
+import ExportToExcelButton from '../ExportToExcelButton/ExportToExcelButton';
 
 const ExpenseStyled = styled.div`
     display: flex;
     overflow: auto;
-    .total-expense{
+    .total-income{
         display: flex;
         justify-content: center;
         align-items: center;
@@ -64,19 +22,60 @@ const ExpenseStyled = styled.div`
         padding: 1rem;
         margin: 1rem 0;
         font-size: 2rem;
+        gap: .5rem;
         span{
             font-size: 2.5rem;
             font-weight: 800;
-            color: var(--color-delete); // Use delete color for total expense
+            color: var(--color-green);
         }
     }
-    .expense-content{
+    .income-content{
         display: flex;
         gap: 2rem;
-        .expenses{
+        .incomes{
             flex: 1;
         }
     }
 `;
-
+function Expenses() {
+    const { expenses, getExpenses, deleteExpense, totalExpenses } = useGlobalContext();
+    useEffect(() => {
+        getExpenses();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    return (
+        <ExpenseStyled> {/* This is where ExpenseStyled is used */}
+            <InnerLayout>
+                <h1>Expenses</h1>
+                <h2 className="total-income">Total Expense: <span>₹{totalExpenses()}</span></h2>
+                <div className="income-content">
+                    <div className="form-container">
+                        <ExpenseForm />
+                        {/* === START OF ADDITION === */}
+                        <div style={{ marginTop: '1rem' }}>
+                            <ExportToExcelButton data={expenses} fileName="PiggyTrack_Expenses" buttonText="Download Expenses" />
+                        </div>
+                        {/* === END OF ADDITION === */}
+                    </div>
+                    <div className="incomes">
+                        {expenses.map(({ _id, title, amount, date, category, description, type }) => (
+                            <IncomeItem
+                                key={_id}
+                                id={_id}
+                                title={title}
+                                description={description}
+                                amount={amount}
+                                date={date}
+                                type={type || 'expense'}
+                                category={category}
+                                indicatorColor="var(--color-green)"
+                                deleteItem={deleteExpense}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </InnerLayout>
+        </ExpenseStyled>
+    );
+}
 export default Expenses;
