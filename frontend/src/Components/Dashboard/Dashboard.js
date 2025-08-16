@@ -1,5 +1,4 @@
 // File: frontend/src/Components/Dashboard/Dashboard.js
-
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useGlobalContext } from '../../context/globalContext';
@@ -11,41 +10,61 @@ import Chart from '../Chart/Chart';
 function Dashboard() {
     const { incomes, expenses, getIncomes, getExpenses } = useGlobalContext();
 
-    // Ref for the balance display element
+    // Create refs for each amount display element
     const balanceRef = useRef(null);
+    const totalIncomeRef = useRef(null);
+    const totalExpenseRef = useRef(null);
+    const minIncomeRef = useRef(null);
+    const maxIncomeRef = useRef(null);
+    const minExpenseRef = useRef(null);
+    const maxExpenseRef = useRef(null);
 
     useEffect(() => {
         getIncomes();
         getExpenses();
     }, []); // eslint-disable-next-line react-hooks/exhaustive-deps
 
+    // Effect to adjust font sizes dynamically
     useEffect(() => {
-        // FIX: Dynamic font size adjustment for total balance
-        const adjustFontSize = () => {
-            if (balanceRef.current) {
-                const parentWidth = balanceRef.current.parentElement.offsetWidth; // Get width of the containing div
-                const textWidth = balanceRef.current.scrollWidth; // Get the actual width of the text
-                const currentFontSize = parseFloat(window.getComputedStyle(balanceRef.current).fontSize); // Get current font size
+        // Helper function to adjust font size to fit container width
+        const adjustFontSize = (element, initialRemSize) => {
+            if (!element) return;
 
-                // If text is wider than its parent, reduce font size proportionally
-                if (textWidth > parentWidth) {
-                    const newFontSize = (currentFontSize * parentWidth) / textWidth * 0.9; // 0.9 to give some padding
-                    balanceRef.current.style.fontSize = `${newFontSize}px`;
-                } else {
-                    // Reset to a default large size if it fits, then check again
-                    // This prevents it from shrinking too much if the number becomes small again
-                    // You might need to refine this based on your max expected size
-                    balanceRef.current.style.fontSize = `4rem`; // Reset to max default, then let it shrink if needed
-                }
+            const defaultPxSize = initialRemSize * 16; // Convert rem to px (assuming 1rem = 16px)
+            element.style.fontSize = `${defaultPxSize}px`; // Reset to default to measure true text width
+
+            const parentWidth = element.parentElement.offsetWidth; // Get width of the containing div
+            const textWidth = element.scrollWidth; // Get the actual width of the text
+
+            if (textWidth > parentWidth && parentWidth > 0) { // Check parentWidth > 0 to avoid division by zero
+                const newFontSize = (defaultPxSize * parentWidth) / textWidth * 0.95; // 0.95 to give some padding
+                element.style.fontSize = `${newFontSize}px`;
             }
         };
 
-        // Run adjustment on mount and whenever incomes/expenses change (data update)
-        adjustFontSize();
-        // Also run on window resize to adapt to layout changes
-        window.addEventListener('resize', adjustFontSize);
-        return () => window.removeEventListener('resize', adjustFontSize);
-    }, [incomes, expenses]); // Rerun effect when data changes
+        // Run adjustment for all refs
+        adjustFontSize(balanceRef.current, 4); // Initial 4rem for balance
+        adjustFontSize(totalIncomeRef.current, 3.5); // Initial 3.5rem for total income
+        adjustFontSize(totalExpenseRef.current, 3.5); // Initial 3.5rem for total expense
+        adjustFontSize(minIncomeRef.current, 1.6); // Initial 1.6rem for min income
+        adjustFontSize(maxIncomeRef.current, 1.6); // Initial 1.6rem for max income
+        adjustFontSize(minExpenseRef.current, 1.6); // Initial 1.6rem for min expense
+        adjustFontSize(maxExpenseRef.current, 1.6); // Initial 1.6rem for max expense
+
+        // Add event listener for window resize to re-adjust
+        const handleResize = () => {
+            adjustFontSize(balanceRef.current, 4);
+            adjustFontSize(totalIncomeRef.current, 3.5);
+            adjustFontSize(totalExpenseRef.current, 3.5);
+            adjustFontSize(minIncomeRef.current, 1.6);
+            adjustFontSize(maxIncomeRef.current, 1.6);
+            adjustFontSize(minExpenseRef.current, 1.6);
+            adjustFontSize(maxExpenseRef.current, 1.6);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [incomes, expenses]); // Re-run this effect when data changes
 
     const totalIncome = incomes.reduce((total, income) => total + income.amount, 0);
     const totalExpenses = expenses.reduce((total, expense) => total + expense.amount, 0);
@@ -69,19 +88,21 @@ function Dashboard() {
                         <div className="amount-con">
                             <div className="income">
                                 <h2>Total Income</h2>
-                                <p className="amount-display">
+                                {/* Attach ref */}
+                                <p className="amount-display" ref={totalIncomeRef}>
                                     {rupee} {totalIncome}
                                 </p>
                             </div>
                             <div className="expense">
                                 <h2>Total Expense</h2>
-                                <p className="amount-display">
+                                {/* Attach ref */}
+                                <p className="amount-display" ref={totalExpenseRef}>
                                     {rupee} {totalExpenses}
                                 </p>
                             </div>
                             <div className="balance">
                                 <h2>Total Balance</h2>
-                                {/* FIX: Attach ref to the p tag */}
+                                {/* Attach ref */}
                                 <p className="amount-display" ref={balanceRef}>
                                     {rupee} {totalBalance}
                                 </p>
@@ -92,19 +113,21 @@ function Dashboard() {
                         <History />
                         <h2 className="salary-title">Min <span>Salary</span> Max</h2>
                         <div className="salary-item">
-                            <p>
+                            {/* Attach refs */}
+                            <p ref={minIncomeRef}>
                                 {rupee} {minIncome}
                             </p>
-                            <p>
+                            <p ref={maxIncomeRef}>
                                 {rupee} {maxIncome}
                             </p>
                         </div>
                         <h2 className="salary-title">Min <span>Expense</span> Max</h2>
                         <div className="salary-item">
-                            <p>
+                            {/* Attach refs */}
+                            <p ref={minExpenseRef}>
                                 {rupee} {minExpense}
                             </p>
-                            <p>
+                            <p ref={maxExpenseRef}>
                                 {rupee} {maxExpense}
                             </p>
                         </div>
@@ -137,30 +160,35 @@ const DashboardStyled = styled.div`
                     box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
                     border-radius: 20px;
                     padding: 1rem;
+                    /* Base p styles for default font size and weight */
                     p {
-                        font-size: 3.5rem; /* Base font size for all */
+                        font-size: 3.5rem; /* This will be overridden by JS for balance, but is base for others */
                         font-weight: 700;
                     }
+                    /* Styling for all amount displays using flexbox */
                     .amount-display {
                         display: flex;
                         align-items: center;
                         gap: 0.5rem;
                         white-space: nowrap; /* Keep on single line */
-                        /* Do NOT use overflow: hidden; or text-overflow: ellipsis; here anymore for balance */
-                        /* We will control font size with JS for balance */
+                        overflow: hidden; /* Hide anything that overflows without JS adjustment */
+                        text-overflow: ellipsis; /* Show ellipsis for clipped text */
+                        max-width: 100%; /* Ensure it respects container width */
                     }
                 }
+                /* Specific styling for the balance container */
                 .balance {
                     grid-column: 2 / 4;
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
+                    /* Specific styling for the amount display within balance */
                     .amount-display {
                         color: var(--color-green);
                         opacity: 0.8;
-                        /* Initial large font size for balance, will be adjusted by JS */
-                        font-size: 4rem; /* This will be the starting point for JS adjustment */
+                        /* Font size will be dynamically set by JS, but this is a fallback/initial */
+                        font-size: 4rem; /* This will be adjusted by JS if needed */
                     }
                 }
             }
@@ -190,7 +218,11 @@ const DashboardStyled = styled.div`
                 align-items: center;
                 p {
                     font-weight: 600;
-                    font-size: 1.6rem;
+                    font-size: 1.6rem; /* This font size will be adjusted by JS if needed */
+                    white-space: nowrap; /* Keep on single line */
+                    overflow: hidden; /* Hide anything that overflows without JS adjustment */
+                    text-overflow: ellipsis; /* Show ellipsis for clipped text */
+                    max-width: 100%; /* Ensure it respects container width */
                 }
             }
         }
