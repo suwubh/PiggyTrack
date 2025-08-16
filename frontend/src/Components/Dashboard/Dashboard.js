@@ -39,21 +39,18 @@ function Dashboard() {
                         <div className="amount-con">
                             <div className="income">
                                 <h2>Total Income</h2>
-                                {/* FIX: Ensure rupee and amount are in a flex container */}
                                 <p className="amount-display">
                                     {rupee} {totalIncome}
                                 </p>
                             </div>
                             <div className="expense">
                                 <h2>Total Expense</h2>
-                                {/* FIX: Ensure rupee and amount are in a flex container */}
                                 <p className="amount-display">
                                     {rupee} {totalExpenses}
                                 </p>
                             </div>
                             <div className="balance">
                                 <h2>Total Balance</h2>
-                                {/* FIX: Ensure rupee and amount are in a flex container */}
                                 <p className="amount-display">
                                     {rupee} {totalBalance}
                                 </p>
@@ -100,7 +97,7 @@ const DashboardStyled = styled.div`
                 grid-template-columns: repeat(4, 1fr);
                 gap: 2rem;
                 margin-top: 2rem;
-                .income, .expense {
+                .income, .expense, .balance {
                     grid-column: span 2;
                 }
                 .income, .expense, .balance {
