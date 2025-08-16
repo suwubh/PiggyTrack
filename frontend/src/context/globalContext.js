@@ -1,7 +1,9 @@
+// File: frontend/src/context/globalContext.js (Cleaned and adjusted)
+
 import React, { useContext, useMemo, useState } from "react";
 import axios from "axios";
 
-// FIXED: Removed backslashes from variable names and corrected the regex
+// Ensure REACT_APP_API_URL points to your *backend* service URL in Render environment variables
 const API_BASE = (process.env.REACT_APP_API_URL || "https://piggytrack.onrender.com").replace(/\/+$/, "");
 
 const GlobalContext = React.createContext();
@@ -15,11 +17,9 @@ export const GlobalProvider = ({ children }) => {
 
   const api = useMemo(() => {
     const instance = axios.create({
-      // FIXED: Added backticks for template literal
-      baseURL: `${API_BASE}/api`,
+      baseURL: `${API_BASE}/api/v1`, // Ensure this matches your backend mounting point
     });
     instance.interceptors.request.use((config) => {
-      // FIXED: Added backticks for template literal
       if (token) config.headers.Authorization = `Bearer ${token}`;
       return config;
     });
@@ -30,8 +30,7 @@ export const GlobalProvider = ({ children }) => {
   const addIncome = async (income) => {
     try {
       const payload = { ...income, amount: Number(income.amount) };
-      // FIXED: Added quotes and backticks to the path
-      await api.post(`/income`, payload);
+      await api.post(`/income`, payload); // Use /income, not /add-income
       await getIncomes();
       setError(null);
     } catch (err) {
@@ -41,8 +40,7 @@ export const GlobalProvider = ({ children }) => {
 
   const getIncomes = async () => {
     try {
-      // FIXED: Added quotes to the path
-      const { data } = await api.get(`/income`);
+      const { data } = await api.get(`/income`); // Use /income, not /get-incomes
       setIncomes(Array.isArray(data) ? data : []);
       setError(null);
     } catch (err) {
@@ -52,7 +50,6 @@ export const GlobalProvider = ({ children }) => {
 
   const deleteIncome = async (id) => {
     try {
-      // FIXED: Added backticks to the path
       await api.delete(`/income/${id}`);
       await getIncomes();
       setError(null);
@@ -67,8 +64,7 @@ export const GlobalProvider = ({ children }) => {
   const addExpense = async (expense) => {
     try {
       const payload = { ...expense, amount: Number(expense.amount) };
-      // FIXED: Added quotes and backticks to the path
-      await api.post(`/expenses`, payload);
+      await api.post(`/expenses`, payload); // Use /expenses, not /add-expense
       await getExpenses();
       setError(null);
     } catch (err) {
@@ -78,8 +74,7 @@ export const GlobalProvider = ({ children }) => {
 
   const getExpenses = async () => {
     try {
-      // FIXED: Added quotes to the path
-      const { data } = await api.get(`/expenses`);
+      const { data } = await api.get(`/expenses`); // Use /expenses, not /get-expenses
       setExpenses(Array.isArray(data) ? data : []);
       setError(null);
     } catch (err) {
@@ -89,7 +84,6 @@ export const GlobalProvider = ({ children }) => {
 
   const deleteExpense = async (id) => {
     try {
-      // FIXED: Added backticks to the path
       await api.delete(`/expenses/${id}`);
       await getExpenses();
       setError(null);
