@@ -1,3 +1,5 @@
+// File: frontend/src/App.js
+
 import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 import bg from "./img/bg.png";
@@ -9,20 +11,16 @@ import Income from "./Components/Income/Income";
 import Expenses from "./Components/Expenses/Expenses";
 import AuthPage from "./Components/Auth/Authpage";
 import Transactions from "./Components/Transactions/Transactions";
-
+import { GlobalStyle } from "./styles/GlobalStyle"; // <-- ADD THIS IMPORT
 
 function App() {
     const [active, setActive] = useState(1);
-
     const orbMemo = useMemo(() => <Orb />, []);
-
     const token = localStorage.getItem("token");
-
     const handleSignOut = () => {
         localStorage.removeItem("token");
         window.location.reload();
     };
-
     const displayData = () => {
         switch (active) {
             case 1:
@@ -37,15 +35,14 @@ function App() {
                 return <Dashboard />;
         }
     };
-
     // LOGIN / SIGNUP VIEW
     if (!token) {
         return <AuthPage />;
     }
-
     // DASHBOARD VIEW
     return (
         <AppStyled bg={bg}>
+            <GlobalStyle /> {/* <-- ADD THIS LINE */}
             {orbMemo}
             <MainLayout>
                 <Navigation active={active} setActive={setActive} handleSignOut={handleSignOut} />
@@ -57,11 +54,8 @@ function App() {
         </AppStyled>
     );
 }
-
 export default App;
-
 // --- Styled Components ---
-
 const AppStyled = styled.div`
     height: 100vh;
     background-image: url(${(props) => props.bg});
@@ -76,7 +70,6 @@ const AppStyled = styled.div`
         padding: 20px;
     }
 `;
-
 const HeaderTitle = styled.h1`
     font-size: 3.8rem;
     font-weight: 700;
