@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import defaultAvatar from '../../img/avatar.png'; // Make sure this path is correct
-import { signout, dollar } from '../../utils/Icons';
+import { signout, rupee } from '../../utils/Icons';
 import { menuItems } from '../../utils/menuItems';
 import { useGlobalContext } from '../../context/globalContext';
 
@@ -26,7 +26,7 @@ function Navigation({ active, setActive, handleSignOut }) {
                 <div className="text">
                     {/* FIX: Display user's name from context */}
                     <h2>{user?.name || "User"}</h2>
-                    <p>{dollar} {totalBalance()}</p>
+                    <p>{rupee} {totalBalance()}</p>
                 </div>
             </div>
             <ul className="menu-items">
