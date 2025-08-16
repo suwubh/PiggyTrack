@@ -80,13 +80,11 @@ const AppStyled = styled.div`
   }
 `;
 
-const SignOutButton = styled.button`
-  margin-bottom: 20px;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  border: none;
-  background: #ef4444;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
+const HeaderTitle = styled.h1`
+    font-size: 1.8rem; /* Adjust font size as needed */
+    font-weight: 700;
+    color: var(--color-accent); /* Use your defined accent color, e.g., #F56692 */
+    margin-bottom: 20px; /* Spacing below the title */
+    text-align: center; /* Center the title */
+    user-select: none; /* Prevent text selection */
 `;
