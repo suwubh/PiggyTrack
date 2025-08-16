@@ -30,8 +30,6 @@ function App() {
       case 1:
         return <Dashboard />;
       case 2:
-        // Assuming this is for Transactions. If you removed transactions.js from backend, this might need adjustment
-        // For now, it might still render the original transactions page if it exists
         return <h2>Transactions Page</h2>; // placeholder for transaction view
       case 3:
         return <Income />;
@@ -54,7 +52,7 @@ function App() {
       <MainLayout>
         <Navigation active={active} setActive={setActive} handleSignOut={handleSignOut} />
         <main>
-          <SignOutButton onClick={handleSignOut}>Sign Out</SignOutButton>
+          <HeaderTitle>PiggyTrack</HeaderTitle>
           {displayData()}
         </main>
       </MainLayout>
