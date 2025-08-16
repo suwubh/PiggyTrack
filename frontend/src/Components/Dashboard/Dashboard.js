@@ -1,34 +1,28 @@
 // File: frontend/src/Components/Dashboard/Dashboard.js
-
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useGlobalContext } from '../../context/globalContext';
-import History from '../../History/History';
+import History from '../History/History'; // Corrected import path, assuming History is directly in Components/
 import { InnerLayout } from '../../styles/Layouts';
 import { dollar, rupee } from '../../utils/Icons'; // Make sure rupee is imported
 import Chart from '../Chart/Chart';
 
 function Dashboard() {
     const { incomes, expenses, getIncomes, getExpenses } = useGlobalContext();
-
     useEffect(() => {
         getIncomes();
         getExpenses();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
     const totalIncome = incomes.reduce((total, income) => total + income.amount, 0);
     const totalExpenses = expenses.reduce((total, expense) => total + expense.amount, 0);
     const totalBalance = totalIncome - totalExpenses;
-
     const incomeAmounts = incomes.map(item => item.amount);
     const minIncome = incomeAmounts.length ? Math.min(...incomeAmounts) : 0;
     const maxIncome = incomeAmounts.length ? Math.max(...incomeAmounts) : 0;
-
     const expenseAmounts = expenses.map(item => item.amount);
     const minExpense = expenseAmounts.length ? Math.min(...expenseAmounts) : 0;
     const maxExpense = expenseAmounts.length ? Math.max(...expenseAmounts) : 0;
-
     return (
         <DashboardStyled>
             <InnerLayout>
@@ -83,7 +77,6 @@ function Dashboard() {
         </DashboardStyled>
     );
 }
-
 const DashboardStyled = styled.div`
     .stats-con {
         display: grid;
@@ -110,13 +103,17 @@ const DashboardStyled = styled.div`
                         font-size: 3.5rem;
                         font-weight: 700;
                     }
-
                     .amount-display {
                         display: flex; /* Make it a flex container */
                         align-items: center; /* Align items vertically in the middle */
                         gap: 0.5rem; /* Add a small gap between the icon and the number */
-                        font-size: 3.5rem; /* Ensure font size is still applied */
+                        font-size: 3.5rem; /* Default font size */
                         font-weight: 700;
+                        /* FIX: Add overflow handling properties */
+                        white-space: nowrap; /* Keep text on a single line */
+                        overflow: hidden; /* Hide overflowing content */
+                        text-overflow: ellipsis; /* Show ellipsis for clipped text */
+                        max-width: 100%; /* Ensure it respects container width */
                     }
                 }
                 .balance {
@@ -127,10 +124,14 @@ const DashboardStyled = styled.div`
                     align-items: center;
                     .amount-display { /* Apply specific color for balance */
                         color: var(--color-green);
-                        align-items: center;
-                        max-width: 100%; 
                         opacity: 0.8; /* Adjusted for better visibility */
-                        font-size: 3.5rem; /* Slightly larger for balance */
+                        /* FIX: Set a slightly larger font size for balance, but rely on overflow properties */
+                        font-size: 4rem; /* You can adjust this default for balance */
+                        /* Ensure these are present to prevent overflow */
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        max-width: 100%;
                     }
                 }
             }
@@ -166,5 +167,4 @@ const DashboardStyled = styled.div`
         }
     }
 `;
-
 export default Dashboard;
