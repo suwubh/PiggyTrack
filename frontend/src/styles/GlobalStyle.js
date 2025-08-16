@@ -21,7 +21,10 @@ export const GlobalStyle = createGlobalStyle`
     body{
         font-family: 'Nunito', sans-serif;
         font-size: clamp(1rem, 1.5vw, 1.2rem);
-        overflow: hidden; /* This might need adjustment for mobile; consider 'auto' or 'unset' on specific elements */
+        /* IMPORTANT: Remove 'overflow: hidden;' here if it's causing issues on mobile */
+        /* It's better to manage overflow on specific containers or through media queries */
+        overflow-x: hidden; /* Prevent horizontal scrolling */
+        overflow-y: auto; /* Allow vertical scrolling */
         color: rgba(34, 34, 96, .6);
     }
     h1, h2, h3, h4, h5, h6{
@@ -49,119 +52,77 @@ export const GlobalStyle = createGlobalStyle`
         }
     }
 
-    /* === START OF MOBILE RESPONSIVENESS ADDITIONS === */
+    /* === START OF MOBILE RESPONSIVENESS ADDITIONS (adjusted) === */
 
-    /* General media query for screens up to 768px (common tablet breakpoint) */
     @media screen and (max-width: 768px) {
         body, html {
-            /* Adjust body font size */
             font-size: 14px; 
-            /* You might need to change 'overflow: hidden;' in body for mobile scrolling */
-            overflow: auto; /* Allow scrolling on smaller screens */
+            overflow-x: hidden; /* Keep horizontal hidden */
+            overflow-y: auto; /* Ensure vertical scrolling is allowed */
         }
         
-        main { /* Refers to the <main> tag in App.js */
-            padding: 10px; /* Reduce padding on smaller screens */
+        main { 
+            padding: 10px; 
         }
 
         /* Dashboard/General layout adjustments */
-        .stats-con { /* Found in DashboardStyled */
-            grid-template-columns: repeat(1, 1fr) !important; /* Stack items vertically */
-            gap: 1rem !important; /* Reduce gap */
+        .stats-con { 
+            grid-template-columns: repeat(1, 1fr) !important; 
+            gap: 1rem !important; 
         }
 
-        .amount-con { /* Found in DashboardStyled */
-            grid-template-columns: repeat(1, 1fr) !important; /* Stack amount boxes vertically */
-            gap: 1rem !important; /* Reduce gap */
+        .amount-con { 
+            grid-template-columns: repeat(1, 1fr) !important; 
+            gap: 1rem !important; 
         }
 
-        .income, .expense, .balance { /* Found in DashboardStyled */
-            grid-column: span 1 !important; /* Ensure they take full width */
-            font-size: 1.5rem !important; /* Example: Reduce font size for these boxes */
-            padding: 0.5rem !important; /* Reduce padding */
+        .income, .expense, .balance { 
+            grid-column: span 1 !important; 
+            font-size: 1.5rem !important; 
+            padding: 0.5rem !important; 
         }
 
-        h1, h2 { /* General headings */
-            font-size: 1.5rem !important; /* Smaller headings for general use */
+        h1, h2 { 
+            font-size: 1.5rem !important; 
         }
 
         /* Specific adjustments for Income/Expense total summaries */
         .total-income, .total-expense {
             font-size: 1.5rem !important;
             span {
-                font-size: 2rem !important; /* Adjust the size of the amount itself */
+                font-size: 2rem !important;
             }
         }
 
         /* Adjust font size for min/max salary/expense items */
-        .salary-item p { /* Found in DashboardStyled */
-            font-size: 1rem !important; /* Smaller text for these */
+        .salary-item p { 
+            font-size: 1rem !important; 
         }
 
         /* Layout for Income/Expense content sections */
         .income-content, .expense-content {
-            flex-direction: column; /* Stack form and items vertically */
-            gap: 1.5rem; /* Adjust gap between stacked items */
+            flex-direction: column; 
+            gap: 1.5rem; 
         }
 
         /* Form container within income/expense sections */
         .form-container {
-            width: 100%; /* Ensure form takes full width available */
-            padding: 0.8rem; /* Adjust padding if needed */
+            width: 100%; 
+            padding: 0.8rem;
         }
 
         /* Item lists (incomes/expenses) */
         .incomes, .expenses {
-            width: 100%; /* Ensure the list takes full width */
-            padding: 0; /* Remove extra padding if present */
+            width: 100%;
+            padding: 0; 
         }
 
-        /* Navigation adjustments for mobile */
-        nav { /* Assuming your Navigation component is a <nav> tag */
-            width: 100% !important; /* Make nav full width on mobile */
-            height: auto !important; /* Auto height */
-            position: fixed !important; /* Keep it fixed at top/bottom */
-            bottom: 0 !important; /* Place at bottom of screen */
-            left: 0 !important;
-            right: 0 !important;
-            flex-direction: row !important; /* Arrange items horizontally */
-            justify-content: space-around !important; /* Distribute items evenly */
-            padding: 0.5rem !important;
-            border-top-left-radius: 20px !important; /* Round top corners */
-            border-top-right-radius: 20px !important;
-            border-bottom-left-radius: 0 !important; /* Remove bottom corners */
-            border-bottom-right-radius: 0 !important;
-            z-index: 100; /* Ensure it's on top */
-            background: #FCF6F9; /* Match your app background */
-            box-shadow: 0px -1px 15px rgba(0, 0, 0, 0.06); /* Shadow at the top */
-        }
-        nav .user-con { /* Adjust user info in navigation */
-            display: none !important; /* Hide user info on small screens */
-        }
-        nav .menu-items {
-            flex-direction: row !important; /* Horizontal menu items */
-            width: 100% !important;
-            justify-content: space-around !important;
-            padding: 0 !important;
-        }
-        nav .menu-items li {
-            margin: 0 !important; /* Remove vertical margins */
-            padding: 0.5rem 0.2rem !important; /* Adjust padding */
-        }
-        nav .bottom-nav-btn { /* Assuming a logout or similar button at bottom */
-            display: none !important; /* Hide on mobile if navigation is at bottom */
-        }
-
-        /* Adjust main layout to accommodate fixed bottom nav */
-        .main-layout { /* Assuming MainLayout is a class or component that applies these styles */
-            padding-bottom: 60px; /* Add space for the fixed bottom navigation */
-            padding-top: 1rem; /* Adjust top padding if needed */
-        }
+        /* REMOVED GLOBAL NAV STYLES - NOW HANDLED BY RESPONSIVENAVIGATION */
+        /* REMOVED GLOBAL .main-layout PADDING - NOW HANDLED BY APPSTYLED MARGIN */
     }
 
-    /* Optional: Further adjustments for very small mobile screens (e.g., max-width: 480px) */
     @media screen and (max-width: 480px) {
-        /* You can add more specific rules here if needed */
+        /* Further specific rules for very small screens */
     }
     /* === END OF MOBILE RESPONSIVENESS ADDITIONS === */
 `;
