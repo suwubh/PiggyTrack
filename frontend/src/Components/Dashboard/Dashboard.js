@@ -30,40 +30,43 @@ function Dashboard() {
         const adjustFontSize = (element, initialRemSize, minRemSize = 1) => {
             if (!element) return;
 
+            const defaultPxSize = initialRemSize * 16; // Convert rem to px (assuming 1rem = 16px)
+
             // Reset font size to initial large value to measure true required width
-            element.style.fontSize = `${initialRemSize}rem`;
+            // This is crucial for accurate measurement and dynamic shrinking
+            element.style.fontSize = `${defaultPxSize}px`;
 
             const parent = element.parentElement;
             if (!parent) return; // Ensure parent exists
 
+            const elementComputedStyle = window.getComputedStyle(element); // Get computed style for the element itself
+            
             // Calculate parent's usable width, accounting for its own padding
             const parentComputedStyle = window.getComputedStyle(parent);
             const parentPaddingLeft = parseFloat(parentComputedStyle.paddingLeft);
             const parentPaddingRight = parseFloat(parentComputedStyle.paddingRight);
             const parentUsableWidth = parent.offsetWidth - parentPaddingLeft - parentPaddingRight;
 
-            // Measure current text width including the rupee symbol and gap
-            // We need to account for the gap because scrollWidth measures content including padding, but not necessarily margin/gap of flex items
-            const textContent = element.textContent; // Get the raw text
-            const textSpan = document.createElement('span'); // Create a temporary span to measure text width
-            textSpan.style.fontFamily = computedStyle.fontFamily;
-            textSpan.style.fontWeight = computedStyle.fontWeight;
-            textSpan.style.fontSize = `${initialRemSize}rem`;
-            textSpan.style.whiteSpace = 'nowrap'; // Ensure it doesn't wrap during measurement
-            textSpan.style.position = 'absolute'; // Position off-screen
+            // Create a temporary span to measure text width accurately
+            const textSpan = document.createElement('span'); 
+            textSpan.style.fontFamily = elementComputedStyle.fontFamily; // Use element's font-family
+            textSpan.style.fontWeight = elementComputedStyle.fontWeight; // Use element's font-weight
+            textSpan.style.fontSize = `${defaultPxSize}px`; // Use the default size for measurement
+            textSpan.style.whiteSpace = 'nowrap'; 
+            textSpan.style.position = 'absolute'; 
             textSpan.style.visibility = 'hidden';
-            textSpan.textContent = textContent;
+            textSpan.textContent = element.textContent; // Get the full text content
             document.body.appendChild(textSpan);
             const currentTextWidth = textSpan.offsetWidth;
             document.body.removeChild(textSpan);
 
-            // Add the gap from the .amount-display style
-            const amountDisplayComputedStyle = window.getComputedStyle(element);
-            const gapBetweenRupeeAndAmount = parseFloat(amountDisplayComputedStyle.gap); // This is in pixels
+            // Get the gap value from the element's computed style (it's a flex container)
+            const gapBetweenRupeeAndAmount = parseFloat(elementComputedStyle.gap || '0px'); 
 
-            const totalContentWidthNeeded = currentTextWidth + gapBetweenRupeeAndAmount; // Estimate total width needed
+            // Total width needed = text content width + gap
+            const totalContentWidthNeeded = currentTextWidth + gapBetweenRupeeAndAmount;
 
-            console.log(`Element: ${element.textContent.trim()}, Parent Usable Width: ${parentUsableWidth}px, Content Needed: ${totalContentWidthNeeded}px`);
+            console.log(`Element: ${element.textContent.trim()}, Parent Usable Width: ${parentUsableWidth}px, Content Needed: ${totalContentWidthNeeded}px, Gap: ${gapBetweenRupeeAndAmount}px`);
 
             if (totalContentWidthNeeded > parentUsableWidth && parentUsableWidth > 0) {
                 let newFontSizePx = (parentUsableWidth / totalContentWidthNeeded) * defaultPxSize;
@@ -82,7 +85,6 @@ function Dashboard() {
 
         const runAllAdjustments = () => {
             // Give a slight delay to ensure DOM is fully rendered after data updates
-            // This can help with initial incorrect measurements
             setTimeout(() => {
                 adjustFontSize(balanceRef.current, 4, 1.8);
                 adjustFontSize(totalIncomeRef.current, 3.5, 1.5);
@@ -112,7 +114,7 @@ function Dashboard() {
 
     const expenseAmounts = expenses.map(item => item.amount);
     const minExpense = expenseAmounts.length ? Math.min(...expenseAmounts) : 0;
-    const maxExpense = expenseAmounts.length ? Math.Max(...expenseAmounts) : 0; // Fix: Max
+    const maxExpense = expenseAmounts.length ? Math.max(...expenseAmounts) : 0; // Fixed typo: Math.Max -> Math.max
 
     return (
         <DashboardStyled>
