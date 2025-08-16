@@ -1,43 +1,48 @@
-import React, { useEffect } from 'react'
-import styled from 'styled-components'
+// File: src/Components/Income/Income.js
+
+import React, { useEffect } from 'react';
+import styled from 'styled-components';
 import { useGlobalContext } from '../../context/globalContext';
 import { InnerLayout } from '../../styles/Layouts';
-import Form from '../Form/Form';
-import IncomeItem from '../Income/IncomeItem';
+import IncomeItem from '../IncomeItem/IncomeItem';
+import ExpenseForm from '../Form/ExpenseForm'; // Assuming this is for incomes form
+import ExportToExcelButton from '../ExportToExcelButton/ExportToExcelButton'; // Import the new component
 
 function Income() {
     const { incomes, getIncomes, deleteIncome, totalIncome } = useGlobalContext();
 
     useEffect(() => {
-getIncomes();
-}, []);
+        getIncomes();
+    }, []);
 
     return (
         <IncomeStyled>
             <InnerLayout>
                 <h1>Incomes</h1>
-                <h2 className="total-income">
-                    Total Income: <span>₹{totalIncome()}</span>
-                </h2>
+                <h2 className="total-income">Total Income: <span>₹{totalIncome()}</span></h2>
                 <div className="income-content">
                     <div className="form-container">
-                        <Form />
+                        <ExpenseForm /> {/* Your form to add income */}
+                        <div style={{ marginTop: '1rem' }}>
+                            <ExportToExcelButton data={incomes} fileName="PiggyTrack_Incomes" buttonText="Download Incomes" />
+                        </div>
                     </div>
                     <div className="incomes">
-                        {incomes.map(({ _id, title, amount, date, category, description, type }) => (
-                         <IncomeItem
-                           key={_id}
-                            id={_id}
-                            title={title}
-                     description={description}
-                amount={amount}
-                   date={date}
-                type={type || 'income'}
-              category={category}
-             indicatorColor="var(--color-green)"
-          deleteItem={deleteIncome}
-           />
-           ))}
+                        {incomes.map((income) => {
+                            const { _id, title, amount, date, category, description, type } = income;
+                            return <IncomeItem
+                                key={_id}
+                                id={_id}
+                                title={title}
+                                description={description}
+                                amount={amount}
+                                date={date}
+                                type={type}
+                                category={category}
+                                indicatorColor="var(--color-green)"
+                                deleteItem={deleteIncome}
+                            />
+                        })}
                     </div>
                 </div>
             </InnerLayout>
@@ -59,7 +64,6 @@ const IncomeStyled = styled.div`
         padding: 1rem;
         margin: 1rem 0;
         font-size: 2rem;
-        gap: .5rem;
         span{
             font-size: 2.5rem;
             font-weight: 800;
