@@ -1,7 +1,6 @@
 // File: src/styles/GlobalStyle.js
 
 import { createGlobalStyle } from 'styled-components'
-
 export const GlobalStyle = createGlobalStyle`
     *{
         margin: 0;
@@ -51,9 +50,7 @@ export const GlobalStyle = createGlobalStyle`
             }
         }
     }
-
-    /* === START OF MOBILE RESPONSIVENESS ADDITIONS (adjusted) === */
-
+    /* --- START OF MOBILE RESPONSIVENESS ADDITIONS (adjusted) --- */ /* CORRECTED LINE */
     @media screen and (max-width: 768px) {
         body, html {
             font-size: 14px; 
@@ -64,28 +61,23 @@ export const GlobalStyle = createGlobalStyle`
         main { 
             padding: 10px; 
         }
-
         /* Dashboard/General layout adjustments */
         .stats-con { 
             grid-template-columns: repeat(1, 1fr) !important; 
             gap: 1rem !important; 
         }
-
         .amount-con { 
             grid-template-columns: repeat(1, 1fr) !important; 
             gap: 1rem !important; 
         }
-
         .income, .expense, .balance { 
             grid-column: span 1 !important; 
             font-size: 1.5rem !important; 
             padding: 0.5rem !important; 
         }
-
         h1, h2 { 
             font-size: 1.5rem !important; 
         }
-
         /* Specific adjustments for Income/Expense total summaries */
         .total-income, .total-expense {
             font-size: 1.5rem !important;
@@ -93,36 +85,30 @@ export const GlobalStyle = createGlobalStyle`
                 font-size: 2rem !important;
             }
         }
-
         /* Adjust font size for min/max salary/expense items */
         .salary-item p { 
             font-size: 1rem !important; 
         }
-
         /* Layout for Income/Expense content sections */
         .income-content, .expense-content {
             flex-direction: column; 
             gap: 1.5rem; 
         }
-
         /* Form container within income/expense sections */
         .form-container {
             width: 100%; 
             padding: 0.8rem;
         }
-
         /* Item lists (incomes/expenses) */
         .incomes, .expenses {
             width: 100%;
             padding: 0; 
         }
-
         /* REMOVED GLOBAL NAV STYLES - NOW HANDLED BY RESPONSIVENAVIGATION */
         /* REMOVED GLOBAL .main-layout PADDING - NOW HANDLED BY APPSTYLED MARGIN */
     }
-
     @media screen and (max-width: 480px) {
         /* Further specific rules for very small screens */
     }
-    /* === END OF MOBILE RESPONSIVENESS ADDITIONS === */
-`;
+    /* --- END OF MOBILE RESPONSIVENESS ADDITIONS --- */ /* CORRECTED LINE */
+\`;
