@@ -98,11 +98,8 @@ const DashboardStyled = styled.div`
                     padding: 1rem;
                     p {
                         font-weight: 700;
-                        /* Responsive font size */
                         font-size: clamp(1.2rem, 2.5vw, 4rem);
                         white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
                         max-width: 100%;
                     }
                 }
@@ -147,8 +144,6 @@ const DashboardStyled = styled.div`
                     font-weight: 600;
                     font-size: clamp(1rem, 1.5vw, 1.6rem);
                     white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
                     max-width: 100%;
                 }
             }
