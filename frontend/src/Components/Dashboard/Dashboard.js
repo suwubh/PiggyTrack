@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useGlobalContext } from '../../context/globalContext';
-import History from '../History/History';
+import History from '../../History/History';
 import { InnerLayout } from '../../styles/Layouts';
 import { dollar, rupee } from '../../utils/Icons'; // Make sure rupee is imported
 import Chart from '../Chart/Chart';
