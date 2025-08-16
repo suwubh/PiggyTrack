@@ -20,10 +20,8 @@ export const GlobalStyle = createGlobalStyle`
     body{
         font-family: 'Nunito', sans-serif;
         font-size: clamp(1rem, 1.5vw, 1.2rem);
-        /* IMPORTANT: Remove 'overflow: hidden;' here if it's causing issues on mobile */
-        /* It's better to manage overflow on specific containers or through media queries */
-        overflow-x: hidden; /* Prevent horizontal scrolling */
-        overflow-y: auto; /* Allow vertical scrolling */
+        overflow-x: hidden;
+        overflow-y: auto;
         color: rgba(34, 34, 96, .6);
     }
     h1, h2, h3, h4, h5, h6{
@@ -50,65 +48,66 @@ export const GlobalStyle = createGlobalStyle`
             }
         }
     }
-    /* --- START OF MOBILE RESPONSIVENESS ADDITIONS (adjusted) --- */ /* CORRECTED LINE */
+
     @media screen and (max-width: 768px) {
         body, html {
             font-size: 14px; 
-            overflow-x: hidden; /* Keep horizontal hidden */
-            overflow-y: auto; /* Ensure vertical scrolling is allowed */
+            overflow-x: hidden;
+            overflow-y: auto;
         }
         
         main { 
             padding: 10px; 
         }
-        /* Dashboard/General layout adjustments */
+
         .stats-con { 
             grid-template-columns: repeat(1, 1fr) !important; 
             gap: 1rem !important; 
         }
+
         .amount-con { 
             grid-template-columns: repeat(1, 1fr) !important; 
             gap: 1rem !important; 
         }
+
         .income, .expense, .balance { 
             grid-column: span 1 !important; 
             font-size: 1.5rem !important; 
             padding: 0.5rem !important; 
         }
+
         h1, h2 { 
             font-size: 1.5rem !important; 
         }
-        /* Specific adjustments for Income/Expense total summaries */
+
         .total-income, .total-expense {
             font-size: 1.5rem !important;
             span {
                 font-size: 2rem !important;
             }
         }
-        /* Adjust font size for min/max salary/expense items */
+
         .salary-item p { 
             font-size: 1rem !important; 
         }
-        /* Layout for Income/Expense content sections */
+
         .income-content, .expense-content {
             flex-direction: column; 
             gap: 1.5rem; 
         }
-        /* Form container within income/expense sections */
+
         .form-container {
             width: 100%; 
             padding: 0.8rem;
         }
-        /* Item lists (incomes/expenses) */
+
         .incomes, .expenses {
             width: 100%;
             padding: 0; 
         }
-        /* REMOVED GLOBAL NAV STYLES - NOW HANDLED BY RESPONSIVENAVIGATION */
-        /* REMOVED GLOBAL .main-layout PADDING - NOW HANDLED BY APPSTYLED MARGIN */
     }
+
     @media screen and (max-width: 480px) {
-        /* Further specific rules for very small screens */
+        
     }
-    /* --- END OF MOBILE RESPONSIVENESS ADDITIONS --- */ /* CORRECTED LINE */
-\`;
+`;
