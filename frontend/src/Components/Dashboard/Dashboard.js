@@ -186,18 +186,14 @@ const DashboardStyled = styled.div`
                 margin-top: 2rem;
                 .income, .expense, .balance {
                     grid-column: span 2;
-                }
-                .income, .expense, .balance {
                     background: #FCF6F9;
                     border: 2px solid #FFFFFF;
                     box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
                     border-radius: 20px;
-                    padding: 1rem; /* Ensure consistent padding here */
+                    padding: 1rem; /* Consider reducing this if still overflowing: e.g., padding: 0.5rem; */
 
-                    p { /* General paragraph style, removed fixed font-size */
+                    p { /* General paragraph style, this will be overridden by .amount-display */
                         font-weight: 700;
-                        /* Font-size will be set dynamically by JS */
-                        /* Do NOT add font-size here if you want JS to control it */
                     }
                     
                     .amount-display {
@@ -205,10 +201,20 @@ const DashboardStyled = styled.div`
                         align-items: center;
                         gap: 0.5rem; /* Explicit gap between rupee and amount */
                         white-space: nowrap; /* Prevent wrapping */
-                        /* IMPORTANT: Remove overflow: hidden; and text-overflow: ellipsis; here */
-                        /* Let JS handle the primary sizing, if it still overflows, let it be visible for debugging */
-                        max-width: 100%; /* Important for flex items to shrink */
-                        flex-shrink: 1; /* Allow the text content to shrink */
+                        overflow: hidden;    /* Hide any text content that exceeds its container */
+                        text-overflow: ellipsis; /* Display an ellipsis (...) when text is clipped */
+                        max-width: 100%;     /* Ensures content respects parent's width */
+                        flex-shrink: 1; /* Allow content to shrink */
+
+                        /* === THE KEY FIXES FOR FONT SIZE === */
+                        /* Use a more robust font-sizing method */
+                        /* For balance, total income, total expense */
+                        font-size: clamp(2rem, 5vw, 4rem); /* Will adjust from 2rem up to 4rem, proportionally to viewport width */
+
+                        /* Target the rupee icon specifically within amount-display if it's too big */
+                        svg, i { /* Assuming rupee is an SVG or an <i> tag for font icons */
+                            font-size: clamp(1.5rem, 4vw, 3rem); /* Smaller than number, scales with it */
+                        }
                     }
                 }
                 .balance {
@@ -220,8 +226,12 @@ const DashboardStyled = styled.div`
                     .amount-display {
                         color: var(--color-green);
                         opacity: 0.8;
-                        /* Ensure no fixed font-size here if JS is controlling */
-                        /* It will be set by JS based on initialRemSize (4rem) */
+                        /* Re-apply clamp here to potentially set a slightly different range for balance */
+                        font-size: clamp(2.5rem, 6vw, 4.5rem); /* Balance can be a bit larger initially */
+
+                        svg, i {
+                            font-size: clamp(2rem, 5vw, 3.5rem);
+                        }
                     }
                 }
             }
@@ -251,13 +261,18 @@ const DashboardStyled = styled.div`
                 align-items: center;
                 p {
                     font-weight: 600;
-                    /* Font size will be set dynamically by JS */
-                    /* Do NOT add font-size here if you want JS to control it */
                     white-space: nowrap;
-                    overflow: hidden; /* Keep for individual min/max items as they are less critical */
+                    overflow: hidden;
                     text-overflow: ellipsis;
                     max-width: 100%;
-                    flex-shrink: 1; /* Allow to shrink */
+                    flex-shrink: 1;
+
+                    /* Apply clamp for min/max salary/expense too */
+                    font-size: clamp(1rem, 3vw, 1.6rem); /* Adjust as needed */
+
+                    svg, i {
+                        font-size: clamp(0.8rem, 2.5vw, 1.4rem);
+                    }
                 }
             }
         }
