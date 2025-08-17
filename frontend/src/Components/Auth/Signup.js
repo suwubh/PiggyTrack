@@ -97,7 +97,7 @@ const SignupContainer = styled.div`
 const SignupCard = styled.div`
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
-  padding: 3rem 2.5rem;
+  padding: 2rem 2rem;
   border-radius: 20px;
   box-shadow: 0 10px 40px rgba(255, 182, 193, 0.15);
   width: 100%;
