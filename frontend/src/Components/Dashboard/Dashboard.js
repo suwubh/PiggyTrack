@@ -54,7 +54,7 @@ function Dashboard() {
                 <h2>Total Balance</h2>
                 <p>
                   {rupee} {totalBalance}
-                </p>
+                <p className="amount-display">
               </div>
             </div>
           </div>
