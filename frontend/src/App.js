@@ -1,5 +1,4 @@
 // File: src/App.js
-
 import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 import bg from "./img/bg.png";
@@ -12,7 +11,7 @@ import Expenses from "./Components/Expenses/Expenses";
 import AuthPage from "./Components/Auth/Authpage";
 import Transactions from "./Components/Transactions/Transactions";
 import { GlobalStyle } from "./styles/GlobalStyle";
-import ResponsiveNavigation from "./Components/ResponsiveNavigation/ResponsiveNavigation"; // <--- ADD THIS IMPORT
+import ResponsiveNavigation from "./Components/ResponsiveNavigation/ResponsiveNavigation";
 
 function App() {
     const [active, setActive] = useState(1);
@@ -36,18 +35,15 @@ function App() {
                 return <Dashboard />;
         }
     };
-    // LOGIN / SIGNUP VIEW
     if (!token) {
         return <AuthPage />;
     }
-    // DASHBOARD VIEW
     return (
         <AppStyled bg={bg}>
             <GlobalStyle />
             {orbMemo}
             <MainLayout>
-                {/* <Navigation ... /> will now be wrapped */}
-                <ResponsiveNavigation> {/* <--- WRAP NAVIGATION */}
+                <ResponsiveNavigation>
                     <Navigation active={active} setActive={setActive} handleSignOut={handleSignOut} />
                 </ResponsiveNavigation>
                 <main>
@@ -59,11 +55,12 @@ function App() {
     );
 }
 export default App;
-// --- Styled Components ---
+
 const AppStyled = styled.div`
     height: 100vh;
     background-image: url(${(props) => props.bg});
     position: relative;
+
     main {
         flex: 1;
         background: rgba(252, 246, 249, 0.78);
@@ -72,10 +69,12 @@ const AppStyled = styled.div`
         border-radius: 32px;
         overflow-x: hidden;
         padding: 20px;
+        
+        margin-left: 0; /* Default: no margin on mobile */
 
         /* Adjust main content for desktop to shift for static sidebar */
         @media(min-width: 769px) {
-            margin-left: 250px; /* Space for the permanent sidebar */
+            margin-left: 250px; /* Space for the permanent sidebar on desktop */
         }
     }
 `;
