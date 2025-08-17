@@ -40,21 +40,18 @@ function Dashboard() {
                         <div className="amount-con">
                             <div className="income">
                                 <h2>Total Income</h2>
-                                {/* Pass data-length attribute */}
                                 <p className="amount-display" data-length={getNumberLength(totalIncome)}>
                                     {rupee} {totalIncome}
                                 </p>
                             </div>
                             <div className="expense">
                                 <h2>Total Expense</h2>
-                                {/* Pass data-length attribute */}
                                 <p className="amount-display" data-length={getNumberLength(totalExpenses)}>
                                     {rupee} {totalExpenses}
                                 </p>
                             </div>
                             <div className="balance">
                                 <h2>Total Balance</h2>
-                                {/* Pass data-length attribute */}
                                 <p className="amount-display" data-length={getNumberLength(totalBalance)}>
                                     {rupee} {totalBalance}
                                 </p>
@@ -96,7 +93,7 @@ const DashboardStyled = styled.div`
 
         .chart-con {
             grid-column: 1 / 4;
-            height: 400px; /* Ensure chart container has enough height */
+            height: 400px;
 
             .amount-con {
                 display: grid;
@@ -104,8 +101,8 @@ const DashboardStyled = styled.div`
                 gap: 2rem;
                 margin-top: 2rem;
 
-                .income, .expense, .balance {
-                    grid-column: span 2; /* Ensures they take up 2 columns in the 4-column grid */
+                .income, .expense {
+                    grid-column: span 2;
                 }
 
                 .income, .expense, .balance {
@@ -113,36 +110,30 @@ const DashboardStyled = styled.div`
                     border: 2px solid #FFFFFF;
                     box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
                     border-radius: 20px;
-                    padding: 1rem; /* Adjust padding if needed */
+                    padding: 1rem;
 
                     .amount-display {
                         display: flex;
                         align-items: center;
-                        gap: 0.5rem; /* Explicit gap between rupee and amount */
-                        white-space: nowrap; /* Prevent wrapping */
-                        overflow: hidden;    /* Hide any text content that exceeds its container */
-                        text-overflow: ellipsis; /* Display an ellipsis (...) when text is clipped */
-                        max-width: 100%;     /* Ensures content respects parent's width */
-                        flex-shrink: 1; /* Allow content to shrink if needed */
-                        min-width: 0; /* Allows content to shrink below its intrinsic size */
-
-                        /* Dynamic font sizing for income and expense based on data-length */
-                        /* Clamp(min-font, preferred-font-formula, max-font) */
+                        gap: 0.5rem;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        max-width: 100%;
+                        flex-shrink: 1;
+                        min-width: 0;
                         font-size: clamp(2rem, 3.5rem - (attr(data-length) - 7) * 0.15rem, 3.5rem);
                         font-weight: 700;
 
-                        /* Targeting rupee icon specifically within amount-display */
-                        svg, i { /* Assuming rupee is an SVG or an <i> tag for font icons */
-                            /* Fixed size, but also consider scaling it with the amount text */
-                            font-size: 2.5rem; /* Base size */
-                            /* You could also scale this: font-size: calc(1em * 0.7); */
-                            flex-shrink: 0; /* Prevent icon from shrinking */
+                        svg, i {
+                            font-size: 2.5rem;
+                            flex-shrink: 0;
                         }
                     }
                 }
 
                 .balance {
-                    grid-column: 2 / 4; /* Centers balance in the 4-column grid */
+                    grid-column: 2 / 4;
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
@@ -151,11 +142,10 @@ const DashboardStyled = styled.div`
                     .amount-display {
                         color: var(--color-green);
                         opacity: 0.8;
-                        /* Dynamic font sizing for balance, potentially larger range */
                         font-size: clamp(2.5rem, 4rem - (attr(data-length) - 7) * 0.2rem, 4rem);
                         
                         svg, i {
-                            font-size: 3rem; /* Fixed size for balance rupee */
+                            font-size: 3rem;
                             flex-shrink: 0;
                         }
                     }
@@ -164,7 +154,7 @@ const DashboardStyled = styled.div`
         }
 
         .history-con {
-            grid-column: 4 / -1; /* Takes up the last 2 columns */
+            grid-column: 4 / -1;
 
             h2 {
                 margin: 1rem 0;
@@ -197,19 +187,34 @@ const DashboardStyled = styled.div`
                     text-overflow: ellipsis;
                     max-width: 100%;
                     flex-shrink: 1;
-                    min-width: 0; /* Allows paragraph content to shrink */
-
-                    /* Dynamic font sizing for min/max amounts */
+                    min-width: 0;
                     font-size: clamp(1.2rem, 1.6rem - (attr(data-length) - 7) * 0.08rem, 1.6rem);
 
                     svg, i {
-                        font-size: 1.4rem; /* Fixed size for min/max rupee */
+                        font-size: 1.4rem;
                         flex-shrink: 0;
                     }
                 }
             }
         }
     }
+
+    /* === START OF MOBILE RESPONSIVENESS FIX === */
+    @media screen and (max-width: 768px) {
+        .stats-con {
+            grid-template-columns: 1fr; /* Stack main sections vertically */
+        }
+        .chart-con, .history-con {
+            grid-column: 1 / -1; /* Make each main section full width */
+        }
+        .amount-con {
+            grid-template-columns: 1fr; /* Stack amount boxes vertically */
+        }
+        .income, .expense, .balance {
+            grid-column: 1 / -1 !important; /* Make each amount box full width */
+        }
+    }
+    /* === END OF MOBILE RESPONSIVENESS FIX === */
 `;
 
 export default Dashboard;
