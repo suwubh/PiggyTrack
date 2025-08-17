@@ -15,6 +15,7 @@ const AuthPage = () => {
   return (
     <AuthWrapper>
       <Logo>PiggyTrack</Logo>
+      <Subtitle>Your personal finance tracker</Subtitle>
       {showSignup ? 
         <Signup switchToLogin={() => setShowSignup(false)} /> : 
         <Login switchToSignup={() => setShowSignup(true)} />
@@ -36,6 +37,18 @@ const Logo = styled.h1`
   color: #be185d;
   font-weight: 700;
   text-shadow: 0 2px 10px rgba(190, 24, 93, 0.1);
+  margin-bottom: 0.5rem;
+`;
+
+const Subtitle = styled.p`
+  text-align: center;
+  font-size: 1.1rem;
+  color: #ffa6c9;
+  margin: 0 0 2rem 0;
+  font-weight: 400;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  letter-spacing: 0.5px;
+  opacity: 0.9;
 `;
 
 export default AuthPage;
