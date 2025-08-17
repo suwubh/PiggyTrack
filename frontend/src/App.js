@@ -57,27 +57,34 @@ function App() {
 export default App;
 
 const AppStyled = styled.div`
-    height: 100vh;
-    background-image: url(${(props) => props.bg});
-    position: relative;
-
-    main {
-        flex: 1;
-        background: rgba(252, 246, 249, 0.78);
-        border: 3px solid #ffffff;
-        backdrop-filter: blur(4.5px);
-        border-radius: 32px;
-        overflow-x: hidden;
-        padding: 20px;
-        
-        margin-left: 0; /* Default: no margin on mobile */
-
-        /* Adjust main content for desktop to shift for static sidebar */
-        @media(min-width: 769px) {
-            margin-left: 180px; /* Space for the permanent sidebar on desktop */
-        }
+  height: 100vh;
+  background-image: url(${(props) => props.bg});
+  position: relative;
+  
+  main {
+    flex: 1;
+    background: rgba(252, 246, 249, 0.78);
+    border: 3px solid #ffffff;
+    backdrop-filter: blur(4.5px);
+    border-radius: 32px;
+    overflow-x: hidden;
+    padding: 20px;
+    margin-left: 0; /* Default: no margin on mobile */
+    
+    /* Adjust main content for desktop to shift for static sidebar */
+    @media(min-width: 769px) {
+      margin-left: 180px; /* Space for the permanent sidebar on desktop */
     }
+    
+    /* Ensure no margin on mobile */
+    @media(max-width: 768px) {
+      margin-left: 0 !important;
+      padding: 10px !important;
+      border-radius: 20px;
+    }
+  }
 `;
+
 const HeaderTitle = styled.h1`
     font-size: 3.8rem;
     font-weight: 700;
