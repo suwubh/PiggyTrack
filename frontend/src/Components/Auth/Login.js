@@ -31,61 +31,50 @@ const Login = ({ switchToSignup }) => {
   };
 
   return (
-    <LoginContainer>
-      <LoginCard>
-        <Logo>Welcome Back</Logo>
-        <LoginForm onSubmit={handleSubmit}>
-          <InputGroup>
-            <Label>Email Address</Label>
-            <Input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-          </InputGroup>
-          
-          <InputGroup>
-            <Label>Password</Label>
-            <Input
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              value={form.password}
-              onChange={handleChange}
-              required
-            />
-          </InputGroup>
-
-          {error && <ErrorMessage>{error}</ErrorMessage>}
-          
-          <SubmitButton type="submit">Sign In</SubmitButton>
-        </LoginForm>
+    <LoginCard>
+      <CardLogo>Welcome Back</CardLogo>
+      <LoginForm onSubmit={handleSubmit}>
+        <InputGroup>
+          <Label>Email Address</Label>
+          <Input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+        </InputGroup>
         
-        <SwitchText>
-          Don't have an account? 
-          <SwitchLink onClick={switchToSignup}> Sign up here</SwitchLink>
-        </SwitchText>
-      </LoginCard>
-    </LoginContainer>
+        <InputGroup>
+          <Label>Password</Label>
+          <Input
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            value={form.password}
+            onChange={handleChange}
+            required
+          />
+        </InputGroup>
+
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+        
+        <SubmitButton type="submit">Sign In</SubmitButton>
+      </LoginForm>
+      
+      <SwitchText>
+        Don't have an account? 
+        <SwitchLink onClick={switchToSignup}> Sign up here</SwitchLink>
+      </SwitchText>
+    </LoginCard>
   );
 };
-
-const LoginContainer = styled.div`
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #fdf2f8, #f8fafc);
-  padding: 2rem;
-`;
 
 const LoginCard = styled.div`
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
-  padding: 3rem 2.5rem;
+  padding: 2rem 2rem;
   border-radius: 20px;
   box-shadow: 0 10px 40px rgba(255, 182, 193, 0.15);
   width: 100%;
@@ -93,18 +82,19 @@ const LoginCard = styled.div`
   border: 1px solid rgba(255, 182, 193, 0.2);
 `;
 
-const Logo = styled.h1`
+const CardLogo = styled.h2`
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
   color: #be185d;
   font-weight: 600;
 `;
 
+// ... rest of your styled components remain the same ...
 const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.2rem;
 `;
 
 const InputGroup = styled.div`
@@ -176,7 +166,7 @@ const ErrorMessage = styled.div`
 
 const SwitchText = styled.p`
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   color: #6b7280;
   font-size: 0.9rem;
 `;
