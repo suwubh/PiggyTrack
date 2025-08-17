@@ -74,7 +74,7 @@ const AppStyled = styled.div`
 
         /* Adjust main content for desktop to shift for static sidebar */
         @media(min-width: 769px) {
-            margin-left: 250px; /* Space for the permanent sidebar on desktop */
+            margin-left: 374px; /* Space for the permanent sidebar on desktop */
         }
     }
 `;
