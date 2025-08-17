@@ -2,34 +2,52 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { signout } from '../../utils/Icons';
+import defaultAvatar from '../../img/avatar.png'; // Make sure this path is correct
+import { signout, rupee } from '../../utils/Icons';
 import { menuItems } from '../../utils/menuItems';
+import { useGlobalContext } from '../../context/globalContext';
 
-function Navigation({ active, setActive, handleSignOut, closeDrawer }) { 
+// Add closeDrawer prop for mobile functionality
+function Navigation({ active, setActive, handleSignOut, closeDrawer }) {
+    const { incomes, expenses, user } = useGlobalContext(); // Destructure 'user' from context
+
+    // Calculate total balance
+    const totalBalance = () => {
+        const totalIncomes = incomes.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+        const totalExpenses = expenses.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+        return totalIncomes - totalExpenses;
+    };
+
     return (
         <NavStyled>
             <div className="user-con">
-                {/* ... your user image and name ... */}
+                <img src={defaultAvatar} alt={user?.name || "User Avatar"} />
+                <div className="text">
+                    <h2>{user?.name || "User"}</h2>
+                    <p>{rupee} {totalBalance()}</p>
+                </div>
             </div>
             <ul className="menu-items">
-                {menuItems.map((item) => {
-                    return (
-                        <li
-                            key={item.id}
-                            onClick={() => {
-                                setActive(item.id);
-                                if (closeDrawer) closeDrawer(); // Close drawer on item click
-                            }}
-                            className={active === item.id ? 'active' : ''}
-                        >
-                            {item.icon}
-                            <span>{item.title}</span>
-                        </li>
-                    );
-                })}
+                {menuItems.map(item => (
+                    <li
+                        key={item.id}
+                        // Add onClick to close drawer on mobile
+                        onClick={() => {
+                            setActive(item.id);
+                            if (closeDrawer) closeDrawer();
+                        }}
+                        className={active === item.id ? 'active' : ''}
+                    >
+                        {item.icon}
+                        <span>{item.title}</span>
+                    </li>
+                ))}
             </ul>
-            <div className="bottom-nav-btn" onClick={handleSignOut}>
-                {signout} Sign Out
+            {/* Using your original sign-out button structure */}
+            <div className="bottom-nav">
+                <li onClick={handleSignOut}>
+                    {signout} <span>Sign Out</span>
+                </li>
             </div>
         </NavStyled>
     );
@@ -37,7 +55,7 @@ function Navigation({ active, setActive, handleSignOut, closeDrawer }) {
 
 const NavStyled = styled.nav`
     padding: 2rem 1.5rem;
-    width: 250px; /* Default width for desktop */
+    width: 374px; /* Your original width */
     height: 100%;
     background: rgba(252, 246, 249, 0.78);
     border: 3px solid #FFFFFF;
@@ -46,13 +64,16 @@ const NavStyled = styled.nav`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    gap: 1rem;
+    overflow-y: auto;
 
     .user-con {
-        height: 80px;
+        height: auto;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        gap: 1rem;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
         img {
             width: 80px;
             height: 80px;
@@ -63,8 +84,10 @@ const NavStyled = styled.nav`
             padding: .2rem;
             box-shadow: 0px 1px 17px rgba(0, 0, 0, 0.06);
         }
-        h2 {
-            color: var(--primary-color);
+        .text {
+            text-align: center;
+            h2 { color: rgba(34,34,96,1); font-size: 1.2rem; margin-top: 0.5rem;}
+            p { color: rgba(34,34,96,0.6); font-size: 0.9rem;}
         }
     }
 
@@ -72,6 +95,7 @@ const NavStyled = styled.nav`
         flex: 1;
         display: flex;
         flex-direction: column;
+        padding-top: 1rem;
         li {
             display: grid;
             grid-template-columns: 40px auto;
@@ -80,82 +104,86 @@ const NavStyled = styled.nav`
             font-weight: 500;
             cursor: pointer;
             transition: all .4s ease-in-out;
-            color: rgba(34, 34, 96, .6);
-            padding-left: 0.5rem;
+            color: rgba(34,34,96,0.6);
+            padding-left: 1rem;
             position: relative;
-            i {
-                color: rgba(34, 34, 96, .6);
-                font-size: 1.4rem;
-                transition: all .4s ease-in-out;
-            }
+            i { color: rgba(34,34,96,0.6); font-size:1.4rem; transition: all .4s ease-in-out; }
             span {
-                font-size: 1.2rem;
+                margin-left: 0.5rem;
+            }
+        }
+        .active {
+            color: rgba(34,34,96,1) !important;
+            i { color: rgba(34,34,96,1) !important; }
+            &::before {
+                content: "";
+                position: absolute;
+                left:0;
+                top:0;
+                width:4px;
+                height:100%;
+                background:#222260;
+                border-radius:0 10px 10px 0;
             }
         }
     }
 
-    .active {
-        color: var(--primary-color) !important;
-        i {
-            color: var(--primary-color) !important;
-        }
-        &::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 4px;
-            height: 100%;
-            background: #222260;
-            border-radius: 0 10px 10px 0;
+    .bottom-nav {
+        margin-top: auto;
+        li {
+            display: grid;
+            grid-template-columns: 40px auto;
+            align-items: center;
+            margin: .6rem 0;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .4s ease-in-out;
+            color: rgba(34,34,96,0.6);
+            padding-left: 1rem;
+            position: relative;
+            i { color: rgba(34,34,96,0.6); font-size:1.4rem; transition: all .4s ease-in-out; }
+            span {
+                margin-left: 0.5rem;
+            }
         }
     }
 
-    .bottom-nav-btn {
-        margin-top: auto; /* Push to bottom */
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: rgba(34, 34, 96, .6);
-        cursor: pointer;
-        font-weight: 500;
-        transition: all .4s ease-in-out;
-    }
-
-    /* Mobile styles for Navigation component when it's inside the drawer */
+    /* === START OF MOBILE DRAWER STYLES === */
     @media(max-width: 768px) {
         width: 100%; /* Take full width of the drawer */
         height: 100%; /* Take full height of the drawer */
-        padding: 1rem; /* Adjust padding */
-        border-radius: 0; /* Remove border-radius */
-        box-shadow: none; /* Remove box-shadow */
-        border: none; /* Remove border */
-        background: transparent; /* Background will be set by SideDrawer */
+        padding: 1rem; /* Adjust padding for mobile */
+        border-radius: 0;
+        box-shadow: none;
+        border: none;
+        background: transparent;
 
+        /* Ensure user-con is still visible and looks good */
         .user-con {
-            display: flex; /* Ensure user-con is displayed */
+            display: flex; /* Kept from your original, looks good for the drawer */
             margin-bottom: 1rem;
         }
 
         .menu-items {
             width: 100%;
-            padding: 0; /* No padding needed */
+            padding: 0;
             li {
                 padding: 0.8rem 0.5rem;
                 margin: 0.3rem 0;
                 font-size: 1.1rem;
-                grid-template-columns: 30px auto; /* Adjust icon/text alignment */
+                grid-template-columns: 30px auto;
                 span {
                     font-size: 1rem;
                 }
             }
         }
 
-        .bottom-nav-btn {
-            margin-top: 1rem; /* Adjust margin */
-            justify-content: center; /* Center the sign out button */
+        .bottom-nav {
+            margin-top: 1rem;
+            justify-content: center;
         }
     }
+    /* === END OF MOBILE DRAWER STYLES === */
 `;
 
 export default Navigation;
