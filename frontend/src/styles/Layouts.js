@@ -8,22 +8,17 @@ export const MainLayout = styled.div`
     display: flex;
     gap: 2rem;
 
-    /* --- START OF MOBILE RESPONSIVENESS FIX --- */
     @media screen and (max-width: 768px) {
-        flex-direction: column; /* Stack navigation and main content vertically */
-        padding: 1rem; /* Reduce padding on mobile */
-        gap: 1rem; /* Reduce gap between elements */
+        padding: 1rem;
+        gap: 1rem;
     }
-    /* --- END OF MOBILE RESPONSIVENESS FIX --- */
 `;
 
 export const InnerLayout = styled.div`
     padding: 2rem 1.5rem;
     width: 100%;
 
-    /* --- START OF MOBILE RESPONSIVENESS FIX --- */
     @media screen and (max-width: 768px) {
-        padding: 1rem 0.5rem; /* Reduce padding inside components on mobile */
+        padding: 1rem 0.5rem;
     }
-    /* --- END OF MOBILE RESPONSIVENESS FIX --- */
 `;
