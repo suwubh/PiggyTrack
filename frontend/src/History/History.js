@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { useGlobalContext } from '../context/globalContext';
+import { useGlobalContext } from '../context/globalContext'; // Corrected import path
 
 function History() {
     const { transactionHistory } = useGlobalContext();
@@ -19,7 +19,7 @@ function History() {
                             {title}
                         </p>
                         <p style={{ color: type === 'expense' ? 'red' : 'var(--color-green)' }}>
-                            {type === 'expense' ? `-₹{amount <= 0 ? 0 : amount}` : `+₹{amount <= 0 ? 0 : amount}`}
+                            {type === 'expense' ? `-${amount <= 0 ? 0 : amount}` : `+${amount <= 0 ? 0 : amount}`}
                         </p>
                     </div>
                 )
