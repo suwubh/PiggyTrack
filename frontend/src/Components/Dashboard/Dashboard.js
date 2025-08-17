@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useGlobalContext } from '../../context/globalContext'; // Corrected import path
+import { useGlobalContext } from '../../context/globalContext';
 import History from '../../History/History';
 import { InnerLayout } from '../../styles/Layouts';
 import { rupee } from '../../utils/Icons';
@@ -40,21 +40,21 @@ function Dashboard() {
             <div className="amount-con">
               <div className="income">
                 <h2>Total Income</h2>
-                <p>
+                <p className="amount-display">
                   {rupee} {totalIncome}
                 </p>
               </div>
               <div className="expense">
                 <h2>Total Expense</h2>
-                <p>
+                <p className="amount-display">
                   {rupee} {totalExpenses}
                 </p>
               </div>
               <div className="balance">
                 <h2>Total Balance</h2>
-                <p>
-                  {rupee} {totalBalance}
                 <p className="amount-display">
+                  {rupee} {totalBalance}
+                </p>
               </div>
             </div>
           </div>
@@ -85,6 +85,7 @@ function Dashboard() {
   );
 }
 
+// Keep your original CSS styling exactly as it was
 const DashboardStyled = styled.div`
   .stats-con {
     display: grid;
