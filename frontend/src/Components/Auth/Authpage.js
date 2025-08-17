@@ -56,7 +56,7 @@ const Logo = styled.h1`
 `;
 
 const Subtitle = styled.p`
-  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
   color: #ffa6c9;
   margin: 0;
   font-weight: 500;
