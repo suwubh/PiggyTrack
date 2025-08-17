@@ -31,21 +31,11 @@ export const GlobalStyle = createGlobalStyle`
         color: red;
         animation: shake 0.5s ease-in-out;
         @keyframes shake {
-            0%{
-                transform: translateX(0);
-            }
-            25%{
-                transform: translateX(10px);
-            }
-            50%{
-                transform: translateX(-10px);
-            }
-            75%{
-                transform: translateX(10px);
-            }
-            100%{
-                transform: translateX(0);
-            }
+            0%{ transform: translateX(0); }
+            25%{ transform: translateX(10px); }
+            50%{ transform: translateX(-10px); }
+            75%{ transform: translateX(10px); }
+            100%{ transform: translateX(0); }
         }
     }
 
@@ -60,18 +50,18 @@ export const GlobalStyle = createGlobalStyle`
             padding: 10px; 
         }
 
-        .stats-con { 
-            grid-template-columns: repeat(1, 1fr) !important; 
-            gap: 1rem !important; 
+        /* Crucial rules for dashboard layout stacking */
+        .stats-con, .amount-con {
+            display: grid !important; /* Ensure display is grid */
+            grid-template-columns: 1fr !important; /* Stack everything in a single column */
+            gap: 1rem !important;
         }
 
-        .amount-con { 
-            grid-template-columns: repeat(1, 1fr) !important; 
-            gap: 1rem !important; 
+        .income, .expense, .balance, .chart-con, .history-con {
+            grid-column: 1 / -1 !important; /* Ensure each item spans the full single column */
         }
-
+        
         .income, .expense, .balance { 
-            grid-column: span 1 !important; 
             font-size: 1.5rem !important; 
             padding: 0.5rem !important; 
         }
@@ -92,22 +82,22 @@ export const GlobalStyle = createGlobalStyle`
         }
 
         .income-content, .expense-content {
+            display: flex;
             flex-direction: column; 
             gap: 1.5rem; 
         }
 
-        .form-container {
-            width: 100%; 
-            padding: 0.8rem;
-        }
-
-        .incomes, .expenses {
+        .form-container, .incomes, .expenses {
             width: 100%;
             padding: 0; 
+        }
+        
+        .form-container {
+             padding: 0.8rem;
         }
     }
 
     @media screen and (max-width: 480px) {
-        
+        /* You can add further overrides for very small phones here */
     }
 `;
