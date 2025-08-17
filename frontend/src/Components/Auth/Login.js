@@ -1,50 +1,195 @@
 // src/Components/Auth/Login.js
 import React, { useState } from 'react';
+import styled from 'styled-components';
 
 const Login = ({ switchToSignup }) => {
-    const [form, setForm] = useState({ email: '', password: '' });
-    const [error, setError] = useState('');
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
 
-    const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
-    const handleSubmit = async e => {
-        e.preventDefault();
-        try {
-            // FIX: Corrected the API URL to match backend's /api/v1/auth/login
-            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/auth/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(form)
-            });
+  const handleSubmit = async e => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      });
 
-            const data = await res.json();
+      const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed. Please try again.");
+      }
 
-            if (!res.ok) {
-                // If the response is not OK (e.g., 400, 404, 500), throw an error with the message
-                throw new Error(data.message || "Login failed. Please try again.");
-            }
+      localStorage.setItem('token', data.token);
+      window.location.reload();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
-            // Save JWT token
-            localStorage.setItem('token', data.token);
+  return (
+    <LoginContainer>
+      <LoginCard>
+        <Logo>Welcome Back</Logo>
+        <LoginForm onSubmit={handleSubmit}>
+          <InputGroup>
+            <Label>Email Address</Label>
+            <Input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
+          </InputGroup>
+          
+          <InputGroup>
+            <Label>Password</Label>
+            <Input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+          </InputGroup>
 
-            // Redirect to dashboard (full page reload to re-initialize App component)
-            window.location.reload();
-        } catch (err) {
-            setError(err.message);
-        }
-    };
-
-    return (
-        // Your existing JSX for the login form
-        <form onSubmit={handleSubmit}>
-            <h2>Login</h2>
-            <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
-            <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} required />
-            <button type="submit">Login</button>
-            {error && <p className="error">{error}</p>}
-            <p onClick={switchToSignup}>Don't have an account? Sign Up</p>
-        </form>
-    );
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+          
+          <SubmitButton type="submit">Sign In</SubmitButton>
+        </LoginForm>
+        
+        <SwitchText>
+          Don't have an account? 
+          <SwitchLink onClick={switchToSignup}> Sign up here</SwitchLink>
+        </SwitchText>
+      </LoginCard>
+    </LoginContainer>
+  );
 };
+
+const LoginContainer = styled.div`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #fdf2f8, #f8fafc);
+  padding: 2rem;
+`;
+
+const LoginCard = styled.div`
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 3rem 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(255, 182, 193, 0.15);
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid rgba(255, 182, 193, 0.2);
+`;
+
+const Logo = styled.h1`
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #be185d;
+  font-weight: 600;
+`;
+
+const LoginForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+`;
+
+const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const Label = styled.label`
+  color: #374151;
+  font-weight: 500;
+  font-size: 0.9rem;
+`;
+
+const Input = styled.input`
+  padding: 0.8rem 1rem;
+  border: 1px solid #fce7f3;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: #fef7ff;
+  color: #374151;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #f9a8d4;
+    box-shadow: 0 0 0 3px rgba(249, 168, 212, 0.1);
+    background: #ffffff;
+  }
+
+  &::placeholder {
+    color: #9ca3af;
+  }
+`;
+
+const SubmitButton = styled.button`
+  padding: 0.8rem 1.5rem;
+  background: linear-gradient(135deg, #f9a8d4, #ec4899);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
+
+  &:hover {
+    background: linear-gradient(135deg, #f472b6, #db2777);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(236, 72, 153, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
+const ErrorMessage = styled.div`
+  color: #ef4444;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: #fef2f2;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #fecaca;
+`;
+
+const SwitchText = styled.p`
+  text-align: center;
+  margin-top: 2rem;
+  color: #6b7280;
+  font-size: 0.9rem;
+`;
+
+const SwitchLink = styled.span`
+  color: #ec4899;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 export default Login;
