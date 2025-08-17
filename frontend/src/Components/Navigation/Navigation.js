@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { signout } from '../../utils/Icons';
 import { menuItems } from '../../utils/menuItems';
 
-// Add closeDrawer prop
 function Navigation({ active, setActive, handleSignOut, closeDrawer }) { 
     return (
         <NavStyled>
@@ -134,8 +133,7 @@ const NavStyled = styled.nav`
         background: transparent; /* Background will be set by SideDrawer */
 
         .user-con {
-            /* Keep user-con visible in the drawer if desired, or hide it with display:none */
-            display: flex; /* Or 'none' if you want to hide it on mobile in the drawer */
+            display: flex; /* Ensure user-con is displayed */
             margin-bottom: 1rem;
         }
 
