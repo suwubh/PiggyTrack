@@ -31,68 +31,57 @@ const Signup = ({ switchToLogin }) => {
   };
 
   return (
-    <SignupContainer>
-      <SignupCard>
-        <Logo>Create Account</Logo>
-        <SignupForm onSubmit={handleSubmit}>
-          <InputGroup>
-            <Label>Full Name</Label>
-            <Input
-              type="text"
-              name="name"
-              placeholder="Enter your full name"
-              value={form.name}
-              onChange={handleChange}
-              required
-            />
-          </InputGroup>
+    <SignupCard>
+      <CardLogo>Create Account</CardLogo>
+      <SignupForm onSubmit={handleSubmit}>
+        <InputGroup>
+          <Label>Full Name</Label>
+          <Input
+            type="text"
+            name="name"
+            placeholder="Enter your full name"
+            value={form.name}
+            onChange={handleChange}
+            required
+          />
+        </InputGroup>
 
-          <InputGroup>
-            <Label>Email Address</Label>
-            <Input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-          </InputGroup>
-          
-          <InputGroup>
-            <Label>Password</Label>
-            <Input
-              type="password"
-              name="password"
-              placeholder="Create a password"
-              value={form.password}
-              onChange={handleChange}
-              required
-            />
-          </InputGroup>
-
-          {error && <ErrorMessage>{error}</ErrorMessage>}
-          
-          <SubmitButton type="submit">Create Account</SubmitButton>
-        </SignupForm>
+        <InputGroup>
+          <Label>Email Address</Label>
+          <Input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+        </InputGroup>
         
-        <SwitchText>
-          Already have an account? 
-          <SwitchLink onClick={switchToLogin}> Sign in here</SwitchLink>
-        </SwitchText>
-      </SignupCard>
-    </SignupContainer>
+        <InputGroup>
+          <Label>Password</Label>
+          <Input
+            type="password"
+            name="password"
+            placeholder="Create a password"
+            value={form.password}
+            onChange={handleChange}
+            required
+          />
+        </InputGroup>
+
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+        
+        <SubmitButton type="submit">Create Account</SubmitButton>
+      </SignupForm>
+      
+      <SwitchText>
+        Already have an account? 
+        <SwitchLink onClick={switchToLogin}> Sign in here</SwitchLink>
+      </SwitchText>
+    </SignupCard>
   );
 };
-
-const SignupContainer = styled.div`
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #fdf2f8, #f8fafc);
-  padding: 2rem;
-`;
 
 const SignupCard = styled.div`
   background: rgba(255, 255, 255, 0.9);
@@ -105,10 +94,10 @@ const SignupCard = styled.div`
   border: 1px solid rgba(255, 182, 193, 0.2);
 `;
 
-const Logo = styled.h1`
+const CardLogo = styled.h2`
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
   color: #be185d;
   font-weight: 600;
 `;
@@ -116,7 +105,7 @@ const Logo = styled.h1`
 const SignupForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.2rem;
 `;
 
 const InputGroup = styled.div`
@@ -188,7 +177,7 @@ const ErrorMessage = styled.div`
 
 const SwitchText = styled.p`
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   color: #6b7280;
   font-size: 0.9rem;
 `;
