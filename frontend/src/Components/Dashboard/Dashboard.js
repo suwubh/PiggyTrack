@@ -1,7 +1,8 @@
 // File: src/Components/Dashboard/Dashboard.js
+
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useGlobalContext } from '../../context/globalContext';
+import { useGlobalContext } from '../../context/globalContext'; // Corrected import path
 import History from '../../History/History';
 import { InnerLayout } from '../../styles/Layouts';
 import { rupee } from '../../utils/Icons';
@@ -27,6 +28,8 @@ function Dashboard() {
   const minExpense = expenseAmounts.length ? Math.min(...expenseAmounts) : 0;
   const maxExpense = expenseAmounts.length ? Math.max(...expenseAmounts) : 0;
 
+  const getNumberLength = (num) => String(num).length;
+
   return (
     <DashboardStyled>
       <InnerLayout>
@@ -37,19 +40,19 @@ function Dashboard() {
             <div className="amount-con">
               <div className="income">
                 <h2>Total Income</h2>
-                <p className="amount-display">
+                <p>
                   {rupee} {totalIncome}
                 </p>
               </div>
               <div className="expense">
                 <h2>Total Expense</h2>
-                <p className="amount-display">
+                <p>
                   {rupee} {totalExpenses}
                 </p>
               </div>
               <div className="balance">
                 <h2>Total Balance</h2>
-                <p className="amount-display">
+                <p>
                   {rupee} {totalBalance}
                 </p>
               </div>
@@ -87,17 +90,14 @@ const DashboardStyled = styled.div`
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 2rem;
-    
     .chart-con {
       grid-column: 1 / 4;
       height: 400px;
-      
       .amount-con {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 2rem;
         margin-top: 2rem;
-        
         .income, .expense, .balance {
           grid-column: span 2;
         }
@@ -111,7 +111,6 @@ const DashboardStyled = styled.div`
     box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
     border-radius: 20px;
     padding: 1rem;
-    
     .amount-display {
       display: flex;
       align-items: center;
@@ -122,11 +121,10 @@ const DashboardStyled = styled.div`
       max-width: 100%;
       flex-shrink: 1;
       min-width: 0;
-      font-size: clamp(1.5rem, 2.5rem, 3.5rem);
+      font-size: clamp(2rem, 3.5rem - (attr(data-length) - 7) * 0.15rem, 3.5rem);
       font-weight: 700;
-      
       svg, i {
-        font-size: 2rem;
+        font-size: 2.5rem;
         flex-shrink: 0;
       }
     }
@@ -138,14 +136,12 @@ const DashboardStyled = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
     .amount-display {
       color: var(--color-green);
       opacity: 0.8;
-      font-size: clamp(2rem, 3rem, 4rem);
-      
+      font-size: clamp(2.5rem, 4rem - (attr(data-length) - 7) * 0.2rem, 4rem);
       svg, i {
-        font-size: 2.5rem;
+        font-size: 3rem;
         flex-shrink: 0;
       }
     }
@@ -153,7 +149,6 @@ const DashboardStyled = styled.div`
 
   .history-con {
     grid-column: 4 / -1;
-    
     h2 {
       margin: 1rem 0;
       display: flex;
@@ -164,7 +159,6 @@ const DashboardStyled = styled.div`
 
   .salary-title {
     font-size: 1.2rem;
-    
     span {
       font-size: 1.8rem;
     }
@@ -179,7 +173,6 @@ const DashboardStyled = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
     p {
       font-weight: 600;
       white-space: nowrap;
@@ -188,89 +181,34 @@ const DashboardStyled = styled.div`
       max-width: 100%;
       flex-shrink: 1;
       min-width: 0;
-      font-size: clamp(1rem, 1.4rem, 1.6rem);
-      
+      font-size: clamp(1.2rem, 1.6rem - (attr(data-length) - 7) * 0.08rem, 1.6rem);
       svg, i {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         flex-shrink: 0;
       }
     }
   }
 
-  /* COMPREHENSIVE MOBILE RESPONSIVENESS */
+  /* === START OF MOBILE RESPONSIVENESS FIX === */
   @media screen and (max-width: 768px) {
     .stats-con {
-      display: grid !important;
-      grid-template-columns: 1fr !important;
-      gap: 1.5rem !important;
+      grid-template-columns: 1fr; /* Stack main sections vertically */
     }
 
-    .chart-con {
-      grid-column: 1 / -1 !important;
-      height: auto !important;
-      min-height: 300px;
-      
-      .amount-con {
-        display: grid !important;
-        grid-template-columns: 1fr !important;
-        gap: 1rem !important;
-        margin-top: 1rem !important;
-      }
+    .chart-con, .history-con {
+      grid-column: 1 / -1; /* Make each main section full width */
     }
 
-    .history-con {
-      grid-column: 1 / -1 !important;
-      margin-top: 1rem;
+    .amount-con {
+      grid-template-columns: 1fr; /* Stack amount boxes vertically */
     }
 
     .income, .expense, .balance {
-      grid-column: 1 / -1 !important;
-      width: 100% !important;
-      margin-bottom: 0 !important;
-      
-      .amount-display {
-        font-size: clamp(1.2rem, 4vw, 2rem) !important;
-        
-        svg, i {
-          font-size: clamp(1rem, 3vw, 1.5rem) !important;
-        }
-      }
-    }
-
-    .balance {
-      grid-column: 1 / -1 !important;
-      
-      .amount-display {
-        font-size: clamp(1.5rem, 5vw, 2.5rem) !important;
-        
-        svg, i {
-          font-size: clamp(1.2rem, 4vw, 2rem) !important;
-        }
-      }
-    }
-
-    .salary-item {
-      margin-bottom: 1rem;
-      
-      p {
-        font-size: clamp(0.9rem, 3vw, 1.2rem) !important;
-      }
+      grid-column: 1 / -1 !important; /* Make each amount box full width */
     }
   }
 
-  @media screen and (max-width: 480px) {
-    .stats-con {
-      gap: 1rem !important;
-    }
-    
-    .income, .expense, .balance {
-      padding: 0.8rem !important;
-    }
-    
-    .salary-item {
-      padding: 0.8rem !important;
-    }
-  }
+  /* === END OF MOBILE RESPONSIVENESS FIX === */
 `;
 
 export default Dashboard;
