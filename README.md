@@ -1,7 +1,7 @@
 PiggyTrack – Personal Finance Dashboard
 
-A MERN-based personal finance tracker with authentication, expense/income tracking, and interactive charts.
-
+A MERN-based personal finance tracker with authentication, expense/income tracking, and interactive charts with currently 50+ active users.
+ 
 🚀 Live Links
 (https://piggytrack-vbyp.onrender.com)
 
