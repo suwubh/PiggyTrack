@@ -1,180 +1,143 @@
+// File: frontend/src/Components/Income/IncomeItem.js (Revised)
+
 import React from 'react';
 import styled from 'styled-components';
+import { dateFormat } from '../../utils/dateFormat';
+import { bitcoin, book, calender, card, circle, clothing, comment, rupee, food, freelance, medical, money, piggy, stocks, takeaway, trash, tv, users, yt } from '../../utils/Icons';
 
-const AddIncomeForm = ({
-  handleSubmit,
-  title,
-  setTitle,
-  amount,
-  setAmount,
-  date,
-  setDate,
-  category,
-  setCategory,
-  reference,
-  setReference,
-  categories
-}) => {
-  return (
-    <FormWrapper onSubmit={handleSubmit} autoComplete="off">
-      <FormGroup>
-        <Label htmlFor="title">Income Title</Label>
-        <Input
-          id="title"
-          type="text"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          placeholder="e.g. Salary for June"
-          required
-        />
-      </FormGroup>
 
-      <FormGroup>
-        <Label htmlFor="amount">Income Amount</Label>
-        <Input
-          id="amount"
-          type="number"
-          value={amount}
-          onChange={e => setAmount(e.target.value)}
-          placeholder="e.g. 50000"
-          required
-        />
-      </FormGroup>
 
-      <FormGroup>
-        <Label htmlFor="date">Enter a Date</Label>
-        <Input
-          id="date"
-          type="date"
-          value={date}
-          onChange={e => setDate(e.target.value)}
-          required
-        />
-      </FormGroup>
+import Button from '../Button/Button';
 
-      <FormGroup>
-        <Label htmlFor="category">Category</Label>
-        <Select
-          id="category"
-          value={category}
-          onChange={e => setCategory(e.target.value)}
-          required
-        >
-          <option value="" disabled>Select a Category</option>
-          {(categories || []).map(option => (
-            <option value={option.value} key={option.value}>{option.label}</option>
-          ))}
-        </Select>
-      </FormGroup>
+function IncomeItem({ id, title, amount, date, category, description, deleteItem, indicatorColor, type }) {
 
-      <FormGroup>
-        <Label htmlFor="reference">Add a Reference</Label>
-        <TextArea
-          id="reference"
-          rows={3}
-          value={reference}
-          onChange={e => setReference(e.target.value)}
-          placeholder="Any notes for this income"
-        />
-      </FormGroup>
 
-      <AddButton type="submit">Add Income</AddButton>
-    </FormWrapper>
-  );
-};
 
-export default AddIncomeForm;
 
-// Styled Components
-const FormWrapper = styled.form`
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  background: #ffffffcc;
-  border-radius: 16px;
-  padding: 2rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.3rem;
-  box-shadow: 0 4px 28px rgba(236, 72, 153, 0.09);
+    const categoryIcon = () => {
+        switch(category) {
+            case 'salary': return money;
+            case 'freelancing': return freelance;
+            case 'investments': return stocks;
+            case 'stocks': return users; // Assuming 'users' is an icon for stocks
+            case 'bitcoin': return bitcoin;
+            case 'bank': return card;
+            case 'youtube': return yt;
+            case 'other': return piggy;
+            default: return circle; // Fallback icon
+        }
+    };
+
+    const expenseCatIcon = () => {
+        switch (category) {
+            case 'education': return book;
+            case 'groceries': return food;
+            case 'health': return medical;
+            case 'subscriptions': return tv;
+            case 'takeaways': return takeaway;
+            case 'clothing': return clothing;
+            case 'travelling': return freelance; // Assuming freelance is an icon for travelling
+            case 'other': return circle; // Fallback icon
+            default: return circle;
+        }
+    };
+
+    return (
+        <IncomeItemStyled indicator={indicatorColor}>
+            <div className="icon">
+                {/* Render icon directly as it's likely a component or JSX from Icons.js */}
+                {type === 'expense' ? expenseCatIcon() : categoryIcon()}
+            </div>
+            <div className="content">
+                <h5>{title}</h5>
+                <div className="inner-content">
+                    <div className="text">
+                        <p>{rupee} {amount}</p>
+                        <p>{calender} {dateFormat(date)}</p>
+                        <p>{comment} {description}</p>
+                    </div>
+                    <div className="btn-con">
+                        <Button
+                            icon={trash}
+                            bPad={'1rem'}
+                            bRad={'50%'}
+                            bg={'var(--primary-color)'}
+                            color={'#fff'}
+                            iColor={'#fff'}
+                            hColor={'var(--color-green)'}
+                            onClick={() => deleteItem(id)}
+                        />
+                    </div>
+                </div>
+            </div>
+        </IncomeItemStyled>
+    );
+}
+
+const IncomeItemStyled = styled.div`
+    background: #FCF6F9;
+    border: 2px solid #FFFFFF;
+    box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    color: #222260;
+    .icon{
+        width: 80px;
+        height: 80px;
+        border-radius: 20px;
+        background: #F5F5F5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #FFFFFF;
+        /* Removed i tag selector as icons are rendered directly */
+        & > * { /* Target direct children of .icon if they are SVG/React components */
+          font-size: 2.0rem; /* Apply styles directly to the icon element */
+        }
+    }
+    .content{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: .2rem;
+        h5{
+            font-size: 1.3rem;
+            padding-left: 2rem;
+            position: relative;
+            &::before{
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: .8rem;
+                height: .8rem;
+                border-radius: 50%;
+                background: ${props => props.indicator};
+            }
+        }
+        .inner-content{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .text{
+                display: flex;
+                align-items: center;
+                gap: 1.5rem;
+                p{
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    color: var(--primary-color);
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
 `;
-
-const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-`;
-
-const Label = styled.label`
-  margin-bottom: 0.15rem;
-  font-weight: 500;
-  color: #be185d;
-  letter-spacing: 0.5px;
-  font-size: 1rem;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 0.7rem 1rem;
-  border: 1.5px solid #fce7f3;
-  border-radius: 10px;
-  font-size: 1rem;
-  background: #fef7ff;
-  color: #222260;
-  transition: border-color 0.18s;
-  &:focus {
-    border-color: #f9a8d4;
-    outline: none;
-  }
-`;
-
-const Select = styled.select`
-  width: 100%;
-  padding: 0.7rem 1rem;
-  border: 1.5px solid #fce7f3;
-  border-radius: 10px;
-  font-size: 1rem;
-  background: #fef7ff;
-  color: #222260;
-  transition: border-color 0.18s;
-  &:focus {
-    border-color: #f9a8d4;
-    outline: none;
-  }
-`;
-
-const TextArea = styled.textarea`
-  width: 100%;
-  padding: 0.7rem 1rem;
-  border: 1.5px solid #fce7f3;
-  border-radius: 10px;
-  font-size: 1rem;
-  background: #fef7ff;
-  color: #222260;
-  resize: vertical;
-  min-height: 70px;
-  transition: border-color 0.18s;
-  &:focus {
-    border-color: #f9a8d4;
-    outline: none;
-  }
-`;
-
-const AddButton = styled.button`
-  width: 100%;
-  padding: 0.7rem;
-  margin-top: 0.3rem;
-  font-size: 1.08rem;
-  font-weight: 600;
-  border-radius: 10px;
-  border: none;
-  background: linear-gradient(135deg, #f9a8d4, #ed64a6 85%);
-  color: #fff;
-  box-shadow: 0 2px 9px rgba(236, 72, 153, 0.13);
-  cursor: pointer;
-  transition: background 0.19s, transform 0.13s;
-  &:hover, &:focus {
-    background: linear-gradient(135deg, #f072b6, #db2777 85%);
-    transform: translateY(-1px) scale(1.012);
-  }
-`;
+export default IncomeItem;
