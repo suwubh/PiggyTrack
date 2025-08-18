@@ -28,4 +28,4 @@ Backend: Node.js, Express.js
 
 Database: MongoDB Atlas
 
-Deployment: Vercel & Render
+Deployment: Render
