@@ -61,7 +61,7 @@ const AddIncomeForm = ({
           required
         >
           <option value="" disabled>Select a Category</option>
-          {categories.map(option => (
+          {(categories || []).map(option => (
             <option value={option.value} key={option.value}>{option.label}</option>
           ))}
         </Select>
