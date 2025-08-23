@@ -1,5 +1,3 @@
-// File: src/styles/Layouts.js
-
 import styled from "styled-components";
 
 export const MainLayout = styled.div`
