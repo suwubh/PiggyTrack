@@ -1,5 +1,3 @@
-// File: backend/routes/expenses.js (FIXED)
-
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
@@ -10,6 +8,6 @@ router.get('/', authMiddleware, getExpense);
 
 router.post('/', authMiddleware, addExpense);
 
-router.delete('/:id', authMiddleware, deleteExpense); // This line was missing!
+router.delete('/:id', authMiddleware, deleteExpense);
 
 module.exports = router;
