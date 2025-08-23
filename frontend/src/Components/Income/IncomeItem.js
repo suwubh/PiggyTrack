@@ -1,5 +1,3 @@
-// File: frontend/src/Components/Income/IncomeItem.js (Revised)
-
 import React from 'react';
 import styled from 'styled-components';
 import { dateFormat } from '../../utils/dateFormat';
@@ -19,12 +17,12 @@ function IncomeItem({ id, title, amount, date, category, description, deleteItem
             case 'salary': return money;
             case 'freelancing': return freelance;
             case 'investments': return stocks;
-            case 'stocks': return users; // Assuming 'users' is an icon for stocks
+            case 'stocks': return users;
             case 'bitcoin': return bitcoin;
             case 'bank': return card;
             case 'youtube': return yt;
             case 'other': return piggy;
-            default: return circle; // Fallback icon
+            default: return circle;
         }
     };
 
@@ -36,8 +34,8 @@ function IncomeItem({ id, title, amount, date, category, description, deleteItem
             case 'subscriptions': return tv;
             case 'takeaways': return takeaway;
             case 'clothing': return clothing;
-            case 'travelling': return freelance; // Assuming freelance is an icon for travelling
-            case 'other': return circle; // Fallback icon
+            case 'travelling': return freelance;
+            case 'other': return circle;
             default: return circle;
         }
     };
@@ -45,7 +43,6 @@ function IncomeItem({ id, title, amount, date, category, description, deleteItem
     return (
         <IncomeItemStyled indicator={indicatorColor}>
             <div className="icon">
-                {/* Render icon directly as it's likely a component or JSX from Icons.js */}
                 {type === 'expense' ? expenseCatIcon() : categoryIcon()}
             </div>
             <div className="content">
