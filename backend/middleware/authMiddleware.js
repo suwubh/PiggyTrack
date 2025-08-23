@@ -1,5 +1,3 @@
-// File: backend/middleware/authMiddleware.js (Revised)
-
 const jwt = require('jsonwebtoken');
 
 const authMiddleware = (req, res, next) => {
@@ -13,7 +11,7 @@ const authMiddleware = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.userId = decoded.id; // attach user ID to request
+        req.userId = decoded.id;
         next();
     } catch (err) {
         let message = 'Unauthorized: Invalid token.';
