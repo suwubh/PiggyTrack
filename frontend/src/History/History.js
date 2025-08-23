@@ -1,8 +1,6 @@
-// File: src/History/History.js
-
 import React from 'react';
 import styled from 'styled-components';
-import { useGlobalContext } from '../context/globalContext'; // Corrected import path
+import { useGlobalContext } from '../context/globalContext';
 
 function History() {
     const { transactionHistory } = useGlobalContext();
@@ -42,12 +40,11 @@ const HistoryStyled = styled.div`
         justify-content: space-between;
         align-items: center;
 
-        /* Add these rules to prevent internal text overlap */
         p:first-child {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 70%; /* Give title 70% of the space */
+            max-width: 70%;
         }
     }
 `;
