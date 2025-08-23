@@ -1,4 +1,3 @@
-// src/Components/Auth/AuthPage.js
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Login from './Login';
