@@ -1,5 +1,3 @@
-// File: frontend/src/Components/Expenses/Expenses.js
-
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useGlobalContext } from '../../context/globalContext';
@@ -41,21 +39,18 @@ function Expenses() {
     const { expenses, getExpenses, deleteExpense, totalExpenses } = useGlobalContext();
     useEffect(() => {
         getExpenses();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
-        <ExpenseStyled> {/* This is where ExpenseStyled is used */}
+        <ExpenseStyled>
             <InnerLayout>
                 <h1>Expenses</h1>
                 <h2 className="total-income">Total Expense: <span>₹{totalExpenses()}</span></h2>
                 <div className="income-content">
                     <div className="form-container">
                         <ExpenseForm />
-                        {/* === START OF ADDITION === */}
                         <div style={{ marginTop: '1rem' }}>
                             <ExportToExcelButton data={expenses} fileName="PiggyTrack_Expenses" buttonText="Download Expenses" />
                         </div>
-                        {/* === END OF ADDITION === */}
                     </div>
                     <div className="incomes">
                         {expenses.map(({ _id, title, amount, date, category, description, type }) => (
