@@ -1,4 +1,3 @@
-// src/Components/Orb/Orb.js
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
