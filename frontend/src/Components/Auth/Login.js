@@ -1,4 +1,3 @@
-// src/Components/Auth/Login.js
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -90,7 +89,6 @@ const CardLogo = styled.h2`
   font-weight: 600;
 `;
 
-// ... rest of your styled components remain the same ...
 const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
