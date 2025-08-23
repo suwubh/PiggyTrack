@@ -1,21 +1,18 @@
-// File: src/Components/ResponsiveNavigation/ResponsiveNavigation.js
-
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-// Hamburger Button Component
 const HamburgerButton = styled.button`
-  all: unset; /* Remove all default button styles */
+  all: unset;
   cursor: pointer;
   width: 30px;
   height: 22px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: absolute; /* Position it relative to AppStyled or MainLayout */
-  top: 1.5rem; /* Adjust positioning as needed */
+  position: absolute;
+  top: 1.5rem;
   left: 1.5rem;
-  z-index: 2000; /* Ensure it's above other content */
+  z-index: 2000;
   
   span {
     display: block;
@@ -25,12 +22,10 @@ const HamburgerButton = styled.button`
     transition: all 0.3s linear;
   }
 
-  /* Hide hamburger button on larger screens */
   @media(min-width: 769px) {
     display: none;
   }
 
-  /* Animation for X icon when open */
   ${({ open }) => open && `
     span:nth-child(1) {
       transform: rotate(45deg) translate(5px, 5px);
@@ -44,34 +39,31 @@ const HamburgerButton = styled.button`
   `}
 `;
 
-// Side Drawer Container
 const SideDrawer = styled.nav`
   position: fixed;
   left: 0;
   top: 0;
   bottom: 0;
-  width: 250px; /* Width of the drawer when open */
-  background-color: #FCF6F9; /* Match your app background */
-  box-shadow: 2px 0 10px rgba(0,0,0,0.3); /* Shadow for drawer effect */
+  width: 250px;
+  background-color: #FCF6F9;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.3);
   padding: 1rem;
-  transform: ${({ open }) => open ? 'translateX(0)' : 'translateX(-100%)'}; /* Slide in/out */
+  transform: ${({ open }) => open ? 'translateX(0)' : 'translateX(-100%)'};
   transition: transform 0.3s ease-in-out;
-  z-index: 1500; /* Ensure it's above main content but below hamburger */
-  display: flex; /* Adjust to properly layout Navigation component inside */
+  z-index: 1500;
+  display: flex;
   flex-direction: column;
 
-  /* On larger screens, the drawer is always visible and static */
   @media(min-width: 769px) {
-    transform: none !important; /* Override mobile slide effect */
-    position: static; /* No longer fixed */
-    width: 250px; /* Restore desktop width */
+    transform: none !important;
+    position: static;
+    width: 250px;
     box-shadow: none;
-    padding: 0; /* Remove padding if Navigation component adds its own */
-    display: flex; /* Keep flex display */
+    padding: 0;
+    display: flex;
   }
 `;
 
-// Overlay to close drawer when clicking outside
 const Overlay = styled.div`
   display: ${({ open }) => open ? 'block' : 'none'};
   position: fixed;
@@ -79,16 +71,14 @@ const Overlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,0.3); /* Darken background */
-  z-index: 1400; /* Below drawer, above content */
+  background-color: rgba(0,0,0,0.3);
+  z-index: 1400;
 
-  /* Hide overlay on larger screens */
   @media(min-width: 769px) {
     display: none;
   }
 `;
 
-// ResponsiveNavigation Component
 function ResponsiveNavigation({ children }) {
   const [open, setOpen] = useState(false);
 
@@ -103,9 +93,8 @@ function ResponsiveNavigation({ children }) {
       </HamburgerButton>
       
       <SideDrawer open={open} aria-hidden={!open}>
-        {/* Render the children (your Navigation component) inside the drawer */}
         {React.Children.map(children, child =>
-          React.cloneElement(child, { closeDrawer: closeDrawer }) // Pass closeDrawer prop to children
+          React.cloneElement(child, { closeDrawer: closeDrawer })
         )}
       </SideDrawer>
       
