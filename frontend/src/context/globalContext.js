@@ -1,7 +1,6 @@
 import React, { useContext, useMemo, useState, useEffect } from "react";
 import axios from "axios";
 
-// Ensure REACT_APP_API_URL points to your *backend* service URL in Render environment variables
 const API_BASE = (process.env.REACT_APP_API_URL || "https://piggytrack.onrender.com").replace(/\/+$/, "");
 
 const GlobalContext = React.createContext();
@@ -10,13 +9,13 @@ export const GlobalProvider = ({ children }) => {
   const [incomes, setIncomes] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [error, setError] = useState(null);
-  const [user, setUser] = useState(null); // State to store user data
+  const [user, setUser] = useState(null);
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   const api = useMemo(() => {
     const instance = axios.create({
-      baseURL: `${API_BASE}/api/v1`, // Ensure this matches your backend mounting point
+      baseURL: `${API_BASE}/api/v1`,
     });
     instance.interceptors.request.use((config) => {
       if (token) config.headers.Authorization = `Bearer ${token}`;
@@ -25,15 +24,13 @@ export const GlobalProvider = ({ children }) => {
     return instance;
   }, [token]);
 
-  // Function to fetch user data
   const getUserData = async () => {
     try {
-      const { data } = await api.get(`/dashboard`); // Assuming /api/v1/dashboard returns user info
+      const { data } = await api.get(`/dashboard`);
       setUser(data.user);
     } catch (err) {
       console.error("Error fetching user data:", err);
       setUser(null);
-      // Optionally clear token if user data fetching fails (e.g., token expired)
       if (err.response && (err.response.status === 401 || err.response.status === 403)) {
         localStorage.removeItem('token');
         window.location.reload();
@@ -41,22 +38,18 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
-  // Fetch user data on component mount or token change
   useEffect(() => {
     if (token) {
       getUserData();
     } else {
-      setUser(null); // Clear user if no token
+      setUser(null);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]); // Dependency on token ensures re-fetch if token changes
+  }, [token]);
 
-
-  // Income
   const addIncome = async (income) => {
     try {
       const payload = { ...income, amount: Number(income.amount) };
-      await api.post(`/income`, payload); // Use /income, not /add-income
+      await api.post(`/income`, payload);
       await getIncomes();
       setError(null);
     } catch (err) {
@@ -66,7 +59,7 @@ export const GlobalProvider = ({ children }) => {
 
   const getIncomes = async () => {
     try {
-      const { data } = await api.get(`/income`); // Use /income, not /get-incomes
+      const { data } = await api.get(`/income`);
       setIncomes(Array.isArray(data) ? data : []);
       setError(null);
     } catch (err) {
@@ -86,11 +79,10 @@ export const GlobalProvider = ({ children }) => {
 
   const totalIncome = () => incomes.reduce((sum, i) => sum + Number(i.amount || 0), 0);
 
-  // Expenses
   const addExpense = async (expense) => {
     try {
       const payload = { ...expense, amount: Number(expense.amount) };
-      await api.post(`/expenses`, payload); // Use /expenses, not /add-expense
+      await api.post(`/expenses`, payload);
       await getExpenses();
       setError(null);
     } catch (err) {
@@ -100,7 +92,7 @@ export const GlobalProvider = ({ children }) => {
 
   const getExpenses = async () => {
     try {
-      const { data } = await api.get(`/expenses`); // Use /expenses, not /get-expenses
+      const { data } = await api.get(`/expenses`);
       setExpenses(Array.isArray(data) ? data : []);
       setError(null);
     } catch (err) {
@@ -144,8 +136,8 @@ export const GlobalProvider = ({ children }) => {
         transactionHistory,
         error,
         setError,
-        user, // Expose user data
-        getUserData, // Expose function to re-fetch user data if needed
+        user,
+        getUserData,
       }}
     >
       {children}
