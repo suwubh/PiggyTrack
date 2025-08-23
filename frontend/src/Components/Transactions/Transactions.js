@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useGlobalContext } from '../../context/globalContext';
 import { InnerLayout } from '../../styles/Layouts';
-import { rupee } from '../../utils/Icons'; // Assuming 'rupee' icon is available
+import { rupee } from '../../utils/Icons';
 import { dateFormat } from '../../utils/dateFormat';
 
 function Transactions() {
@@ -11,19 +11,13 @@ function Transactions() {
   useEffect(() => {
     getIncomes();
     getExpenses();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Combine incomes and expenses into a single array
-  const allTransactions = [...incomes.map(i => ({
-    ...i,
-    type: 'income'
-  })), ...expenses.map(e => ({
-    ...e,
-    type: 'expense'
-  }))];
+  const allTransactions = [
+    ...incomes.map(i => ({ ...i, type: 'income' })),
+    ...expenses.map(e => ({ ...e, type: 'expense' }))
+  ];
 
-  // Sort by createdAt date, latest first
   allTransactions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   return (
@@ -84,7 +78,7 @@ const TransactionsStyled = styled.div`
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 1.1rem; /* Slightly larger text */
+      font-size: 1.1rem;
 
       .transaction-details {
         display: flex;
@@ -103,18 +97,18 @@ const TransactionsStyled = styled.div`
 
       .transaction-amount {
         font-weight: 700;
-        font-size: 1.3rem; /* Prominent amount */
+        font-size: 1.3rem;
       }
 
       &.income-item {
-        border-left: 6px solid var(--color-green); /* Green border for income */
+        border-left: 6px solid var(--color-green);
         .transaction-amount {
           color: var(--color-green);
         }
       }
 
       &.expense-item {
-        border-left: 6px solid var(--color-delete); /* Red border for expense */
+        border-left: 6px solid var(--color-delete);
         .transaction-amount {
           color: var(--color-delete);
         }
