@@ -1,5 +1,3 @@
-// File: src/Components/Dashboard/Dashboard.js
-
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useGlobalContext } from '../../context/globalContext';
@@ -85,7 +83,6 @@ function Dashboard() {
   );
 }
 
-// Keep your original CSS styling exactly as it was
 const DashboardStyled = styled.div`
   .stats-con {
     display: grid;
