@@ -4,7 +4,6 @@ exports.addExpense = async (req, res) => {
     const { title, amount, category, description, date } = req.body;
 
     try {
-        // Validations
         if (!title || !category || !description || !date) {
             return res.status(400).json({ message: 'All fields are required!' });
         }
@@ -18,7 +17,7 @@ exports.addExpense = async (req, res) => {
             category,
             description,
             date,
-            user: req.userId // ✅ associate with logged-in user
+            user: req.userId
         });
 
         await expense.save();
