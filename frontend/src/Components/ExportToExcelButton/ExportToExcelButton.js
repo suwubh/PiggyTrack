@@ -9,23 +9,12 @@ const ExportToExcelButton = ({ data, fileName, buttonText = 'Download Excel' }) 
       return;
     }
 
-    // Prepare data: Ensure it's a flat array of objects
-    // If your incomes/expenses have nested objects or unwanted fields, you might need to map them here
-    // Example: const processedData = data.map(({ _id, title, amount, date, description }) => ({
-    //   Title: title,
-    //   Amount: amount,
-    //   Date: new Date(date).toLocaleDateString(),
-    //   Description: description
-    // }));
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
 
-    const worksheet = XLSX.utils.json_to_sheet(data); // Converts JSON array to a worksheet
-    const workbook = XLSX.utils.book_new(); // Creates a new workbook
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Data'); // Appends the worksheet to the workbook
-
-    // Generates a binary string for the Excel file
     const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
 
-    // Creates a Blob object and triggers download
     const dataBlob = new Blob([excelBuffer], { type: 'application/octet-stream' });
     saveAs(dataBlob, `${fileName}.xlsx`);
   };
