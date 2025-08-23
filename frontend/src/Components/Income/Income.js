@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useGlobalContext } from '../../context/globalContext';
 import { InnerLayout } from '../../styles/Layouts';
-import Form from '../Form/Form'; // Your original Form component
+import Form from '../Form/Form';
 import IncomeItem from '../Income/IncomeItem';
 import ExportToExcelButton from '../ExportToExcelButton/ExportToExcelButton';
 
@@ -11,7 +11,7 @@ function Income() {
 
     useEffect(() => {
         getIncomes();
-    }, [getIncomes]); // Added getIncomes to dependency array for best practice
+    }, [getIncomes]);
 
     return (
         <IncomeStyled>
@@ -22,13 +22,13 @@ function Income() {
                 </h2>
                 <div className="income-content">
                     <div className="form-container">
-                        <Form /> {/* Your original Form component */}
+                        <Form />
                         <div style={{ marginTop: '1rem' }}>
                             <ExportToExcelButton data={incomes} fileName="PiggyTrack_Incomes" buttonText="Download Incomes" />
                         </div>
                     </div>
                     <div className="incomes">
-                        {incomes.map((income) => { // Destructuring in map callback
+                        {incomes.map((income) => { 
                             const { _id, title, amount, date, category, description, type } = income;
                             return (
                                 <IncomeItem
@@ -38,7 +38,7 @@ function Income() {
                                     description={description}
                                     amount={amount}
                                     date={date}
-                                    type={type || 'income'} // Ensure type is always set
+                                    type={type || 'income'}
                                     category={category}
                                     indicatorColor="var(--color-green)"
                                     deleteItem={deleteIncome}
