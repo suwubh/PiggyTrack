@@ -1,11 +1,10 @@
 const Income = require("../models/Income");
 
-// Add Income
 exports.addIncome = async (req, res) => {
     const { title, amount, category, description, date } = req.body;
 
     try {
-        // Check all fields
+        
         if (!title || !category || !description || !date) {
             return res.status(400).json({ message: 'All fields are required!' });
         }
@@ -15,7 +14,6 @@ exports.addIncome = async (req, res) => {
             return res.status(400).json({ message: 'Amount must be a positive number!' });
         }
 
-        // Ensure userId is present
         if (!req.userId) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
@@ -37,7 +35,6 @@ exports.addIncome = async (req, res) => {
     }
 };
 
-// Get all incomes for logged-in user
 exports.getIncomes = async (req, res) => {
     try {
         const incomes = await Income.find({ user: req.userId }).sort({ createdAt: -1 });
@@ -48,7 +45,6 @@ exports.getIncomes = async (req, res) => {
     }
 };
 
-// Delete income
 exports.deleteIncome = async (req, res) => {
     const { id } = req.params;
     try {
