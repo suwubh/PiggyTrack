@@ -1,17 +1,13 @@
-// File: src/Components/Navigation/Navigation.js
-
 import React from 'react';
 import styled from 'styled-components';
-import defaultAvatar from '../../img/avatar.png'; // Make sure this path is correct
+import defaultAvatar from '../../img/avatar.png';
 import { signout, rupee } from '../../utils/Icons';
 import { menuItems } from '../../utils/menuItems';
 import { useGlobalContext } from '../../context/globalContext';
 
-// Add closeDrawer prop for mobile functionality
 function Navigation({ active, setActive, handleSignOut, closeDrawer }) {
-    const { incomes, expenses, user } = useGlobalContext(); // Destructure 'user' from context
+    const { incomes, expenses, user } = useGlobalContext();
 
-    // Calculate total balance
     const totalBalance = () => {
         const totalIncomes = incomes.reduce((sum, item) => sum + Number(item.amount || 0), 0);
         const totalExpenses = expenses.reduce((sum, item) => sum + Number(item.amount || 0), 0);
@@ -31,7 +27,6 @@ function Navigation({ active, setActive, handleSignOut, closeDrawer }) {
                 {menuItems.map(item => (
                     <li
                         key={item.id}
-                        // Add onClick to close drawer on mobile
                         onClick={() => {
                             setActive(item.id);
                             if (closeDrawer) closeDrawer();
@@ -43,7 +38,6 @@ function Navigation({ active, setActive, handleSignOut, closeDrawer }) {
                     </li>
                 ))}
             </ul>
-            {/* Using your original sign-out button structure */}
             <div className="bottom-nav">
                 <li onClick={handleSignOut}>
                     {signout} <span>Sign Out</span>
