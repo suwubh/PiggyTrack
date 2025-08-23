@@ -1,4 +1,3 @@
-// File: src/App.js
 import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 import bg from "./img/bg.png";
