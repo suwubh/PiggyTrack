@@ -39,3 +39,25 @@ Database: MongoDB (Mongoose)
 Utilities: Axios, XLSX (SheetJS), file-saver
 
 Deployment: Render
+
+
+Roadmap
+
+
+Budgets with progress and alerts
+
+Category analytics (pie/donut; top categories)
+
+Pagination and advanced filters (date range, category)
+
+Recurring transactions
+
+Multi-currency support
+
+Swagger/OpenAPI docs
+
+Test suite (Jest + supertest, Cypress)
+
+Rate limiting for auth, helmet for security headers
+
+
