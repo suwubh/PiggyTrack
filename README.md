@@ -22,7 +22,7 @@ Responsive design for mobile and desktop
 
 🛠 Tech Stack
 
-Frontend: React,
+Frontend: React
 
 Backend: Node.js, Express.js
 
