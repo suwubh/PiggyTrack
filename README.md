@@ -40,7 +40,7 @@ Utilities: Axios, XLSX (SheetJS), file-saver
 
 Deployment: Render
 
-Screenshots
+📸 Screenshots
 
 ![Page1](./screenshots/screenshot1.png)
 ![Page2](./screenshots/screenshot2.png)
