@@ -42,7 +42,7 @@ Deployment: Render
 
 Screenshots
 
-![App Screenshot](./screenshots/Screenshot 2025-08-25 114916.png)
+![Home page](./screenshots/screenshot1.png)
 
 🛣️ Roadmap
 
