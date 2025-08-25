@@ -42,12 +42,12 @@ Deployment: Render
 
 Screenshots
 
-![Home page](./screenshots/screenshot1.png)
-![Home page](./screenshots/screenshot2.png)
-![Home page](./screenshots/screenshot3.png)
-![Home page](./screenshots/screenshot4.png)
-![Home page](./screenshots/screenshot5.png)
-![Home page](./screenshots/screenshot6.png)
+![Page1](./screenshots/screenshot1.png)
+![Page2](./screenshots/screenshot2.png)
+![Page3](./screenshots/screenshot3.png)
+![Page4](./screenshots/screenshot4.png)
+![Page5](./screenshots/screenshot5.png)
+![Page6](./screenshots/screenshot6.png)
 
 
 
