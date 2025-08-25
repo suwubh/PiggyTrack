@@ -43,6 +43,13 @@ Deployment: Render
 Screenshots
 
 ![Home page](./screenshots/screenshot1.png)
+![Home page](./screenshots/screenshot2.png)
+![Home page](./screenshots/screenshot3.png)
+![Home page](./screenshots/screenshot4.png)
+![Home page](./screenshots/screenshot5.png)
+![Home page](./screenshots/screenshot6.png)
+
+
 
 🛣️ Roadmap
 
