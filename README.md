@@ -1,73 +1,171 @@
-PiggyTrack – Personal Finance Dashboard
+# PiggyTrack
 
-PiggyTrack is a full‑stack personal finance tracker built with the MERN stack. It lets users add incomes and expenses, view trends, and understand monthly balance with a clean, responsive UI. It’s designed to be fast, privacy‑friendly, and easy to extend.
+A simple, privacy-first **personal finance tracker** built with the MERN stack.
 
+Live demo: [https://piggytrack-vbyp.onrender.com](https://piggytrack-vbyp.onrender.com)
 
-🚀 Live Links
-(https://piggytrack-vbyp.onrender.com)
+---
 
+## Table of Contents
 
-✨ Features
+* [About](#about)
+* [Features](#features)
+* [Tech Stack](#tech-stack)
+* [Screenshots](#screenshots)
+* [Getting Started](#getting-started)
 
-Authentication with JWT (signup/login)
+  * [Prerequisites](#prerequisites)
+  * [Environment variables](#environment-variables)
+  * [Run locally](#run-locally)
+* [API Endpoints (summary)](#api-endpoints-summary)
+* [Roadmap](#roadmap)
+* [Contributing](#contributing)
+* [License](#license)
+* [Contact](#contact)
 
-Add, view, and delete incomes and expenses
+---
 
-Dashboard with totals (income, expense, balance)
+## About
 
-Recent transactions widget
+**PiggyTrack** is a lightweight personal finance dashboard that helps you record incomes and expenses, visualize trends, and export transaction data. The app emphasizes clarity, responsiveness, and a small footprint so you can track money quickly on both desktop and mobile.
 
-Interactive line chart (income vs expense)
+---
 
-Combined transactions timeline
+## Features
 
-Export data to Excel (XLSX)
+* Signup / Login (JWT)
+* Add, edit, and delete transactions (income & expense)
+* Dashboard with totals (income, expense, balance)
+* Recent transactions list
+* Time-series charts (income vs expense)
+* Export transactions to Excel (XLSX)
+* Responsive UI for mobile and desktop
 
-Responsive design with mobile drawer navigation
+---
 
-Accessible, consistent forms (labels, validation, styled date picker)
+## Tech Stack
 
+* **Frontend:** React
+* **Backend:** Node.js + Express
+* **Database:** MongoDB (Mongoose)
+* **Auth:** JSON Web Tokens (JWT)
+* **Utilities:** Axios, SheetJS (XLSX)
 
-🛠 Tech Stack
+> The repository is split into `frontend/` and `backend/` folders (typical MERN layout).
 
-Frontend: React 18, Context API, styled-components, react-chartjs-2, chart.js, react-datepicker
+---
 
-Backend: Node.js, Express, JWT (jsonwebtoken), bcryptjs
+## Screenshots
 
-Database: MongoDB (Mongoose)
+*(Add screenshots in the `screenshots/` folder and reference them here.)*
 
-Utilities: Axios, XLSX (SheetJS), file-saver
+---
 
-Deployment: Render
+## Getting Started
 
-📸 Screenshots
+### Prerequisites
 
-![Page1](./screenshots/screenshot1.png)
-![Page2](./screenshots/screenshot2.png)
-![Page3](./screenshots/screenshot3.png)
-![Page4](./screenshots/screenshot4.png)
-![Page5](./screenshots/screenshot5.png)
-![Page6](./screenshots/screenshot6.png)
+* Node.js (v16+ recommended)
+* npm or yarn
+* MongoDB (Atlas or local)
 
+### Environment variables
 
+Create a `.env` file in the `backend/` folder with the following values (example):
 
-🛣️ Roadmap
+```
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+CLIENT_URL=http://localhost:3000
+NODE_ENV=development
+```
 
+If the frontend needs an environment file, set the API base URL there (example `.env` in `frontend/`):
 
-Budgets with progress and alerts
+```
+VITE_API_BASE_URL=http://localhost:5000/api
+```
 
-Category analytics (pie/donut; top categories)
+(Adjust names according to the actual implementation in your repo.)
 
-Pagination and advanced filters (date range, category)
+### Run locally
 
-Recurring transactions
+**Backend**
 
-Multi-currency support
+```bash
+cd backend
+npm install
+# create .env as shown above
+npm run dev    # or `npm start` depending on package.json
+```
 
-Swagger/OpenAPI docs
+**Frontend**
 
-Test suite (Jest + supertest, Cypress)
+```bash
+cd frontend
+npm install
+# ensure API base URL is configured in frontend env
+npm run dev    # or `npm start`
+```
 
-Rate limiting for auth, helmet for security headers
+Open the frontend (typically at `http://localhost:3000`) to use the app.
 
+---
 
+## API Endpoints (summary)
+
+> Short reference — adapt to actual routes in your backend.
+
+* `POST /api/auth/register` — Register a user
+* `POST /api/auth/login` — Login and receive a JWT
+* `GET /api/transactions` — Get user's transactions
+* `POST /api/transactions` — Create a transaction
+* `PUT /api/transactions/:id` — Update a transaction
+* `DELETE /api/transactions/:id` — Delete a transaction
+
+---
+
+## Roadmap
+
+Planned improvements:
+
+* Budgets & alerts
+* Category analytics (pie / donut charts)
+* Recurring transactions
+* Multi-currency support
+* Tests (Jest + supertest / Cypress)
+* Better accessibility & internationalization
+
+---
+
+## Contributing
+
+Contributions are welcome! Suggested workflow:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/your-feature`)
+3. Make changes and add tests where appropriate
+4. Open a Pull Request describing your changes
+
+Please open an issue first for larger features so we can discuss approach and API changes.
+
+---
+
+## License
+
+This project is open source — add your chosen license (e.g. `MIT`). See `LICENSE`.
+
+---
+
+## Contact
+
+Repo: [https://github.com/suwubh/PiggyTrack](https://github.com/suwubh/PiggyTrack)
+
+Maintainer: suwubh
+
+Feel free to open issues or pull requests.
+
+---
+
+*Thanks for building PiggyTrack — happy budgeting!*
