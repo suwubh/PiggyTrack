@@ -154,7 +154,8 @@ Please open an issue first for larger features so we can discuss approach and AP
 
 ## License
 
-This project is open source — add your chosen license (e.g. `MIT`). See `LICENSE`.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 
 ---
 
