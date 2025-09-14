@@ -57,7 +57,14 @@ Live demo: [https://piggytrack-vbyp.onrender.com](https://piggytrack-vbyp.onrend
 
 ## Screenshots
 
-*(Add screenshots in the `screenshots/` folder and reference them here.)*
+Here are some screenshots of **PiggyTrack**:
+
+![Screenshot 1](./screenshots/screenshot1.png)
+![Screenshot 2](./screenshots/screenshot2.png)
+![Screenshot 3](./screenshots/screenshot3.png)
+![Screenshot 4](./screenshots/screenshot4.png)
+![Screenshot 5](./screenshots/screenshot5.png)
+![Screenshot 6](./screenshots/screenshot6.png)
 
 ---
 
@@ -155,7 +162,6 @@ Please open an issue first for larger features so we can discuss approach and AP
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 
 ---
 
